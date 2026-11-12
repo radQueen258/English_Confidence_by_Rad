@@ -583,9 +583,67 @@ window.STUDENT_CONFIG = {
     {
       number: 6,
       type: "podcast",
-      pt: null,
-      en: null,
-      podcast: { title: "", url: "" }
+      pt: {
+        title: "Listening & Comprehension — Semana 2",
+        subtitle: "Exercício individual de escuta e compreensão",
+
+        goal: "Assiste ao vídeo com atenção, de preferência duas vezes. Na primeira vez, tenta compreender a mensagem geral sem traduzir cada palavra. Na segunda vez, anota pelo menos 3 palavras ou expressões novas, escreve o que significam e cria uma frase com cada uma. Depois, prepara um pequeno resumo em inglês (3 a 5 frases) sobre o que compreendeste. Na próxima aula vamos conversar sobre as tuas descobertas.",
+
+        vocabulary: [
+          ["Listen carefully", "Ouvir com atenção"],
+          ["Main idea", "Ideia principal"],
+          ["Understand", "Compreender"],
+          ["New expression", "Nova expressão"],
+          ["Summary", "Resumo"]
+        ],
+
+        phrases: [
+          "I UNDERSTOOD THAT... — Compreendi que...",
+          "THE MAIN IDEA IS... — A ideia principal é...",
+          "I LEARNED A NEW WORD... — Aprendi uma palavra nova...",
+          "I DIDN'T UNDERSTAND THIS PART. — Não compreendi esta parte.",
+          "CAN YOU EXPLAIN THIS EXPRESSION? — Podes explicar esta expressão?"
+        ],
+
+        prompts: [
+          "Qual foi a mensagem principal do vídeo?",
+          "Quais foram as 3 palavras ou expressões novas que aprendeste?",
+          "Consegues explicar, em inglês, o que compreendeste?",
+          "Que parte do vídeo gostarias de discutir na próxima aula?"
+        ]
+      },
+
+      en: {
+        title: "Listening & Comprehension — Week 2",
+        subtitle: "Personal listening and comprehension exercise",
+
+        goal: "Watch the video carefully, preferably twice. First, focus on understanding the main message without translating every word. Then watch it again and write down at least 3 new words or expressions, their meanings and one example sentence for each. Prepare a short English summary (3 to 5 sentences) of what you understood. We'll discuss your discoveries in our next lesson.",
+
+        vocabulary: [
+          ["Listen carefully", "Pay close attention to what you hear"],
+          ["Main idea", "The most important message"],
+          ["Understand", "Know what something means"],
+          ["New expression", "A phrase you haven't learned before"],
+          ["Summary", "A short explanation of the main points"]
+        ],
+
+        phrases: [
+          "I UNDERSTOOD THAT...",
+          "THE MAIN IDEA IS...",
+          "I LEARNED A NEW WORD...",
+          "I DIDN'T UNDERSTAND THIS PART.",
+          "CAN YOU EXPLAIN THIS EXPRESSION?"
+        ],
+
+        prompts: [
+          "What was the main message of the video?",
+          "Which 3 new words or expressions did you learn?",
+          "Can you explain what you understood in English?",
+          "Which part would you like to discuss in our next lesson?"
+        ]
+      },
+      podcast: { title: "The 5-Step System To Close More Deals",
+        url: "https://youtu.be/bPBOV--Goww?si=565AMXmM2OZ_RXRe" }
     },
 
     { number: 7, type: "live", pt: null, en: null },
