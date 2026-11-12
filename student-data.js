@@ -1,7 +1,7 @@
 
 
 window.STUDENT_CONFIG = {
-  unlockedThrough: 3,
+  unlockedThrough: 6,
 
   lessons: [
     // ======================================
@@ -384,8 +384,201 @@ window.STUDENT_CONFIG = {
       }
     },
 
-    { number: 4, type: "live", pt: null, en: null },
-    { number: 5, type: "live", pt: null, en: null },
+
+    {
+      number: 4,
+      type: "live",
+
+      pt: {
+        title: "Da Escuta à Conversação",
+        subtitle: "Semana 2 · Aula 1 · Conversação e Tempos Verbais",
+        goal: "Aprender a falar sobre actividades actuais, experiências e situações que começaram no passado e continuam no presente, utilizando o Present Continuous e o Present Perfect Continuous.",
+
+        vocabulary: [
+          ["Difficulties", "Dificuldades"],
+          ["Difficult", "Difícil"],
+          ["Two times / Twice", "Duas vezes"],
+          ["To give an example", "Dar um exemplo"],
+          ["How many?", "Quantos / Quantas?"],
+          ["A lot", "Muito / Muitos / Muitas"],
+          ["Recruits", "Recrutas / Novos membros"],
+          ["Training", "A formar / A treinar"],
+          ["Teaching", "A ensinar"],
+          ["Working", "A trabalhar"],
+          ["Learning", "A aprender"],
+          ["For", "Durante / Há (duração)"],
+          ["Since", "Desde (início)"],
+          ["Married", "Casado/a"],
+          ["Promoted", "Promovido/a"],
+          ["Leaders", "Líderes"],
+          ["Two hundred and fifty", "Duzentos e cinquenta (250)"]
+        ],
+
+        phrases: [
+          "What are you doing?",
+          "What are you learning now?",
+          "Can you hear me? — Yes, I can.",
+          "Do you hear me? — Yes, I do.",
+          "How many people are you training?",
+          "That's a lot of people!",
+          "She is with her recruits.",
+          "How long have you been married?",
+          "How long have you been working at Inuka?",
+          "I have been working at Inuka for five years.",
+          "I have been teaching.",
+          "I have leaders who were promoted.",
+          "I've been learning English.",
+          "She's been working all week.",
+          "We've been practising since our last lesson."
+        ],
+
+        prompts: [
+          "Conta-me o que compreendeste do vídeo. Qual foi a ideia principal?",
+          "O que estás a aprender ou a fazer actualmente?",
+          "Quantas pessoas estás a formar neste momento?",
+          "Há quanto tempo trabalhas na tua empresa?",
+          "Há quanto tempo estás a aprender inglês?",
+          "Explica uma actividade que começaste no passado e que continuas a fazer."
+        ]
+      },
+
+      en: {
+        title: "From Listening to Speaking",
+        subtitle: "Week 2 · Lesson 1 · Speaking and Verb Tenses",
+        goal: "Learn to talk about current activities, experiences, and situations that started in the past and continue in the present, using the Present Continuous and Present Perfect Continuous.",
+
+        vocabulary: [
+          ["Difficulties", "Problems or challenges"],
+          ["Difficult", "Not easy"],
+          ["Two times / Twice", "On two occasions"],
+          ["To give an example", "To illustrate an idea"],
+          ["How many?", "Asking about a quantity"],
+          ["A lot", "A large amount or number"],
+          ["Recruits", "New members of a team"],
+          ["Training", "Helping someone develop skills"],
+          ["Teaching", "Helping someone learn"],
+          ["Working", "Doing a job or activity"],
+          ["Learning", "Gaining knowledge or skills"],
+          ["For", "Used with a duration of time"],
+          ["Since", "Used with a starting point in time"],
+          ["Married", "Having a husband or wife"],
+          ["Promoted", "Moved to a higher position"],
+          ["Leaders", "People who guide a team"],
+          ["Two hundred and fifty", "The number 250"]
+        ],
+
+        phrases: [
+          "What are you doing?",
+          "What are you learning now?",
+          "Can you hear me? — Yes, I can.",
+          "Do you hear me? — Yes, I do.",
+          "How many people are you training?",
+          "That's a lot of people!",
+          "She is with her recruits.",
+          "How long have you been married?",
+          "How long have you been working at Inuka?",
+          "I have been working at Inuka for five years.",
+          "I have been teaching.",
+          "I have leaders who were promoted.",
+          "I've been learning English.",
+          "She's been working all week.",
+          "We've been practising since our last lesson."
+        ],
+
+        prompts: [
+          "What was the main idea of the video? What did you find useful?",
+          "What are you learning or working on right now?",
+          "How many people are you currently training?",
+          "How long have you been working at your company?",
+          "How long have you been learning English?",
+          "Tell me about something you started in the past and are still doing today."
+        ]
+      }
+    },
+
+    { number: 5, type: "live",
+
+      pt: {
+        title: "Na Rua — Pedir e Dar Indicações",
+        subtitle: "Conversas reais e vocabulário útil",
+        goal: "Aprender a fazer perguntas, pedir indicações, dar respostas e comunicar com mais confiança na rua.",
+
+        vocabulary: [
+          ["How?", "Como?"],
+          ["What?", "O quê?"],
+          ["Where?", "Onde?"],
+          ["Which?", "Qual?"],
+          ["When?", "Quando?"],
+          ["Can I...?", "Posso...?"],
+          ["Nearest", "Mais próximo/a"],
+          ["Far", "Longe"],
+          ["From here", "Daqui"],
+          ["Stranger", "Desconhecido/a"],
+          ["Foreigner", "Estrangeiro/a"],
+          ["Travel bags", "Malas de viagem"],
+          ["Straight", "Em frente"],
+          ["Left", "Esquerda"],
+          ["Right", "Direita"],
+          ["Next to", "Ao lado de"]
+        ],
+
+        phrases: [
+          "Excuse me, how do I get to the bank, please?",
+          "Where is the nearest pharmacy?",
+          "Is it far from here?",
+          "Go straight, then turn left.",
+          "I'm here for a conference.",
+          "Good morning, my love."
+        ],
+
+        prompts: [
+          "Estás na rua. Pergunta como chegar ao banco e se fica longe.",
+          "Uma pessoa pergunta onde fica a farmácia mais próxima. Dá indicações.",
+          "Explica a alguém por que estás na cidade."
+        ]
+      },
+
+      en: {
+        title: "On the Street — Asking for Directions",
+        subtitle: "Real conversations and useful vocabulary",
+        goal: "Learn to ask questions, request directions, give answers, and communicate confidently on the street.",
+
+        vocabulary: [
+          ["How?", "In what way?"],
+          ["What?", "Asking for information"],
+          ["Where?", "Asking about a place"],
+          ["Which?", "Asking about a choice"],
+          ["When?", "Asking about time"],
+          ["Can I...?", "Asking for permission"],
+          ["Nearest", "Closest"],
+          ["Far", "Not close"],
+          ["From here", "Starting at this location"],
+          ["Stranger", "Someone you don't know"],
+          ["Foreigner", "Someone from another country"],
+          ["Travel bags", "Luggage"],
+          ["Straight", "Directly ahead"],
+          ["Left", "Opposite of right"],
+          ["Right", "Opposite of left"],
+          ["Next to", "Beside"]
+        ],
+
+        phrases: [
+          "Excuse me, how do I get to the bank, please?",
+          "Where is the nearest pharmacy?",
+          "Is it far from here?",
+          "Go straight, then turn left.",
+          "I'm here for a conference.",
+          "Good morning, my love."
+        ],
+
+        prompts: [
+          "You are on the street. Ask how to get to the bank and whether it is far.",
+          "Someone asks where the nearest pharmacy is. Give directions.",
+          "Explain to someone why you are visiting the city."
+        ]
+      }
+
+    },
 
     {
       number: 6,
