@@ -1,0 +1,40 @@
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedInWithVerifiedEmail() {
+      return request.auth != null
+        && request.auth.token.email_verified == true;
+    }
+
+    function isAdmin() {
+      return isSignedInWithVerifiedEmail()
+        && request.auth.token.email == 'radka.fnhapulo@gmail.com';
+    }
+
+    match /invitations/{email} {
+
+      // A student can only retrieve their own invitation.
+      allow get: if isAdmin()
+        || (
+          isSignedInWithVerifiedEmail()
+          && request.auth.token.email == email
+        );
+
+      // Only the administrator can list all students.
+      allow list: if isAdmin();
+
+      // Only the administrator can manage invitations.
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Keep all other database areas closed for now.
+    // We will add their specific permissions in later stages.
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -10,13 +10,113 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./styles.css" />
-  <script defer src="./student-data.js"></script>
-  <script defer src="./portal.js"></script>
+  <script type="module" src="./js/auth.js"></script>
 </head>
 <body>
   <div class="ambient ambient-a" aria-hidden="true"></div>
   <div class="ambient ambient-b" aria-hidden="true"></div>
-  <header class="topbar page-width">
+
+
+  <section class="auth-screen page-width" id="auth-screen">
+
+    <div class="auth-card">
+
+      <a href="#" class="auth-brand">
+        <span class="brand-mark">e<span>•</span>c</span>
+
+        <span class="brand-type">
+        ENGLISH
+        <strong>CONFIDENCE</strong>
+        <small>PERSONAL LANGUAGE STUDIO</small>
+      </span>
+      </a>
+
+      <p class="auth-eyebrow">
+        YOUR PERSONAL LEARNING SPACE
+      </p>
+
+      <h1>
+        Your voice.<br>
+        <em>Your pace.</em>
+      </h1>
+
+      <p class="auth-intro">
+        Your English journey is personal.
+        Sign in to access your lessons,
+        progress and learning materials.
+      </p>
+
+      <button
+              type="button"
+              id="google-sign-in"
+              class="primary-btn auth-google-btn"
+      >
+        <span class="google-letter">G</span>
+        <span>Continue with Google</span>
+        <span>↗</span>
+      </button>
+
+      <p
+              id="auth-message"
+              class="auth-message"
+              role="status"
+              aria-live="polite"
+      >
+        Access is by invitation only.
+      </p>
+
+      <div class="auth-bottom">
+        PRIVATE LEARNING SPACE · ENGLISH CONFIDENCE
+      </div>
+
+    </div>
+
+    <div class="auth-decoration" aria-hidden="true">
+      <div class="auth-decoration-orbit"></div>
+      <div class="auth-decoration-sphere"></div>
+      <span>GROW AT YOUR PACE ✦</span>
+    </div>
+
+  </section>
+
+
+  <!-- This screen appears after successful authentication -->
+
+  <section
+          class="auth-session page-width"
+          id="auth-session"
+          hidden
+  >
+
+    <div class="auth-session-card">
+
+      <span class="brand-mark">e<span>•</span>c</span>
+
+      <p id="auth-role-tag" class="auth-eyebrow"></p>
+
+      <h1 id="auth-heading"></h1>
+
+      <p id="auth-user-email" class="auth-user-email"></p>
+
+      <p
+              id="auth-session-message"
+              class="auth-intro"
+      ></p>
+
+      <button
+              type="button"
+              id="google-sign-out"
+              class="auth-signout-btn"
+      >
+        Sign out
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <header class="topbar page-width" hidden>
     <a href="#inicio" class="brand" aria-label="English Confidence — Início">
       <span class="brand-mark">e<span>•</span>c</span>
       <span class="brand-type">ENGLISH <strong>CONFIDENCE</strong><small>PERSONAL LANGUAGE STUDIO</small></span>
@@ -31,7 +131,7 @@
     </div>
   </header>
 
-  <main>
+  <main hidden>
     <section class="hero page-width" id="inicio" aria-labelledby="hero-title">
       <div class="hero-copy">
         <div class="eyebrow"><span class="sparkle">✦</span><span data-i18n="heroEyebrow">O TEU ESPAÇO DE APRENDIZAGEM</span><span class="eyebrow-dash"></span>01 / 04</div>
@@ -83,6 +183,6 @@
       </div>
     </section>
   </main>
-  <footer class="footer page-width"><div><span class="footer-brand">english confidence<span>✦</span></span><p data-i18n="footerLine">A tua voz tem lugar no mundo.</p></div><div class="footer-right"><span>PERSONAL LANGUAGE STUDIO</span><span>MADE FOR GROWTH © 2026</span></div></footer>
+  <footer class="footer page-width" hidden><div><span class="footer-brand">english confidence<span>✦</span></span><p data-i18n="footerLine">A tua voz tem lugar no mundo.</p></div><div class="footer-right"><span>PERSONAL LANGUAGE STUDIO</span><span>MADE FOR GROWTH © 2026</span></div></footer>
 </body>
 </html>
