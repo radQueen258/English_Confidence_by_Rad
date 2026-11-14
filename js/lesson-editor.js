@@ -101,6 +101,66 @@ function blankLanguage() {
 }
 
 
+function normalizeLanguage(language) {
+
+    const source = language || {};
+
+    const vocabulary = Array.isArray(source.vocabulary)
+
+        ? source.vocabulary
+            .map(entry => {
+
+                // Original format: ["Early", "Cedo"]
+                if (Array.isArray(entry)) {
+
+                    return {
+                        term: String(entry[0] || ""),
+                        meaning: String(entry[1] || "")
+                    };
+
+                }
+
+                // Already in Firestore-compatible format.
+                if (entry && typeof entry === "object") {
+
+                    return {
+                        term: String(entry.term || ""),
+                        meaning: String(entry.meaning || "")
+                    };
+
+                }
+
+                return null;
+
+            })
+            .filter(entry => entry && (entry.term || entry.meaning))
+
+        : [];
+
+
+    return {
+
+        title: source.title || "",
+
+        subtitle: source.subtitle || "",
+
+        goal: source.goal || "",
+
+        vocabulary,
+
+        phrases: Array.isArray(source.phrases)
+            ? source.phrases
+            : [],
+
+        prompts: Array.isArray(source.prompts)
+            ? source.prompts
+            : []
+
+    };
+
+}
+
+
 function blankLesson(number) {
 
     return {
@@ -203,11 +263,18 @@ function isValidHttpUrl(value) {
 function vocabularyToText(vocabulary = []) {
 
     return vocabulary
-        .map(pair => {
+        .map(entry => {
 
-            if (!Array.isArray(pair)) return "";
+            // Support both the old format and new Firestore format.
+            const term = Array.isArray(entry)
+                ? entry[0]
+                : entry.term;
 
-            return `${pair[0] || ""} | ${pair[1] || ""}`;
+            const meaning = Array.isArray(entry)
+                ? entry[1]
+                : entry.meaning;
+
+            return `${term || ""} | ${meaning || ""}`;
 
         })
         .join("\n");
@@ -252,11 +319,11 @@ function textToVocabulary(text) {
 
         }
 
-        const word = line.slice(0, separator).trim();
+        const term = line.slice(0, separator).trim();
 
         const meaning = line.slice(separator + 1).trim();
 
-        if (!word || !meaning) {
+        if (!term || !meaning) {
 
             return {
                 error: `Please complete both sides of this vocabulary entry: "${line}".`
@@ -264,7 +331,11 @@ function textToVocabulary(text) {
 
         }
 
-        result.push([word, meaning]);
+        // Firestore-compatible format:
+        result.push({
+            term,
+            meaning
+        });
 
     }
 
@@ -1114,53 +1185,50 @@ function legacyContentReady(lesson) {
 }
 
 
+
 async function importLegacyLessons() {
 
     const messageId = "legacy-import-message";
 
+    const importButton = element("import-legacy-lessons");
 
     if (!currentStudentEmail) {
 
         showMessage(
             messageId,
-            "Select the student you want to import lessons for.",
+            "Select a student first.",
             "error"
         );
 
         return;
-
     }
-
 
     if (currentMonthNumber !== 1) {
 
         showMessage(
             messageId,
-            "Legacy student files can only be imported into Month 1.",
+            "Legacy files can only be imported into Month 1.",
             "error"
         );
 
         return;
-
     }
 
-
+    // Check that the temporary source file loaded.
     const config = window.STUDENT_CONFIG;
-
 
     if (!config || !Array.isArray(config.lessons)) {
 
         showMessage(
             messageId,
-            "The legacy lesson file is not loaded. Follow the temporary import instructions below.",
+            "Student data not found. Check the temporary student-data.js script in index.html.",
             "error"
         );
 
         return;
-
     }
 
-
+    // Build the complete 12-lesson structure.
     const lessons = Array.from(
         { length: 12 },
         (_, index) => {
@@ -1174,16 +1242,16 @@ async function importLegacyLessons() {
         }
     );
 
-
     const requested = Math.min(
         13,
-        Math.max(1, Number(config.unlockedThrough) || 1)
+        Math.max(
+            1,
+            Number(config.unlockedThrough) || 1
+        )
     );
 
-
-    // Reproduce the original portal's release logic.
+    // Preserve the old portal's sequential release logic.
     let released = 0;
-
 
     for (const lesson of lessons) {
 
@@ -1191,15 +1259,11 @@ async function importLegacyLessons() {
             lesson.number > requested
             || !legacyContentReady(lesson)
         ) {
-
             break;
-
         }
 
         released = lesson.number;
-
     }
-
 
     if (requested === 13 && released === 12) {
 
@@ -1207,60 +1271,86 @@ async function importLegacyLessons() {
 
     }
 
-
-    // In the old portal, unlockedThrough N meant
-    // the activities before N were completed.
+    // Restore previous completion records.
     const completedCount = released === 13
         ? 12
-        : Math.max(0, Math.min(12, released - 1));
+        : Math.max(
+            0,
+            Math.min(12, released - 1)
+        );
 
+    importButton.disabled = true;
+
+    importButton.textContent = "Preparing import...";
+
+    showMessage(
+        messageId,
+        "Checking existing records..."
+    );
 
     try {
 
-        const existing = await getDocs(
-            collection(
-                db,
-                "students",
-                currentStudentEmail,
-                "months",
-                monthId(),
-                "lessons"
-            )
+        const lessonsCollection = collection(
+            db,
+            "students",
+            currentStudentEmail,
+            "months",
+            "month-1",
+            "lessons"
         );
 
+        const existing = await getDocs(
+            lessonsCollection
+        );
 
+        // Avoid accidentally replacing previously imported data.
         if (existing.size > 0) {
 
             const replace = window.confirm(
-                "This student's Month 1 already contains lesson records. Importing again will replace the 12 lesson documents and reset their old completion records to match the selected legacy file. Continue?"
+                "This student already has lesson records. Re-importing will replace all 12 lesson documents and restore the old completion state. Do you want to continue?"
             );
 
-            if (!replace) return;
+            if (!replace) {
+                return;
+            }
 
         }
 
+        showMessage(
+            messageId,
+            "Preparing lesson and completion records..."
+        );
 
-        const importButton = element("import-legacy-lessons");
+        // Retrieve previous completion documents first.
+        // This lets us create only ONE write per document
+        // in the final batch.
+        const completionSnapshots = await Promise.all(
 
-        importButton.disabled = true;
+            lessons.map(lesson => {
 
-        importButton.textContent = "Importing...";
+                return getDoc(
+                    completionRef(lesson.number)
+                );
 
+            })
+
+        );
 
         const batch = writeBatch(db);
 
+        // ======================================
+        // MONTH RECORD
+        // ======================================
 
-        // Update monthly record.
         batch.set(
             doc(
                 db,
                 "students",
                 currentStudentEmail,
                 "months",
-                monthId()
+                "month-1"
             ),
             {
-
                 monthNumber: 1,
 
                 title: "Month 1",
@@ -1272,132 +1362,144 @@ async function importLegacyLessons() {
                 legacyImportedAt: serverTimestamp(),
 
                 updatedAt: serverTimestamp()
-
             },
             { merge: true }
         );
 
+        // ======================================
+        // LESSON RECORDS
+        // ======================================
 
-        // Import all 12 lessons and clear old
-        // completion records before recreating them.
         for (const lesson of lessons) {
 
             const number = lesson.number;
-
-            const type = lesson.type || lessonType(number);
-
-            const ref = lessonRef(number);
-
-            const oldCompletionRef = completionRef(number);
-
-
-            const oldCompletion = await getDoc(
-                oldCompletionRef
-            );
-
-            if (oldCompletion.exists()) {
-
-                batch.delete(oldCompletionRef);
-
-            }
-
 
             const ready = legacyContentReady(lesson);
 
             const published =
                 ready && number <= released;
 
+            const payload = {
+
+                number,
+
+                type: lesson.type || lessonType(number),
+
+                weekNumber: Math.ceil(number / 3),
+
+                pt: normalizeLanguage(lesson.pt),
+
+                en: normalizeLanguage(lesson.en),
+
+                podcast: lesson.podcast || {
+                    title: "",
+                    url: ""
+                },
+
+                published,
+
+                updatedAt: serverTimestamp(),
+
+                updatedByEmail: auth.currentUser.email,
+
+                importedFromLegacy: true
+
+            };
 
             batch.set(
-                ref,
-                {
-
-                    number,
-
-                    type,
-
-                    weekNumber: Math.ceil(number / 3),
-
-                    pt: lesson.pt || blankLanguage(),
-
-                    en: lesson.en || blankLanguage(),
-
-                    podcast: lesson.podcast || {
-                        title: "",
-                        url: ""
-                    },
-
-                    published,
-
-                    createdAt: serverTimestamp(),
-
-                    updatedAt: serverTimestamp(),
-
-                    updatedByEmail: auth.currentUser.email,
-
-                    importedFromLegacy: true
-
-                }
+                lessonRef(number),
+                payload
             );
-
-
-            // Restore the actual completion count
-            // encoded in the previous unlockedThrough value.
-            if (number <= completedCount) {
-
-                batch.set(
-                    oldCompletionRef,
-                    {
-
-                        completed: true,
-
-                        completedAt: serverTimestamp(),
-
-                        completedByEmail: auth.currentUser.email,
-
-                        source: "legacy-import"
-
-                    }
-                );
-
-            }
 
         }
 
+        // ======================================
+        // COMPLETION RECORDS
+        // ======================================
+
+        lessons.forEach((lesson, index) => {
+
+            const number = lesson.number;
+
+            const oldCompletion =
+                completionSnapshots[index];
+
+            const ref = completionRef(number);
+
+            if (number <= completedCount) {
+
+                // Previously completed:
+                // create or replace the completion record.
+                batch.set(ref, {
+
+                    completed: true,
+
+                    completedAt: serverTimestamp(),
+
+                    completedByEmail: auth.currentUser.email,
+
+                    source: "legacy-import"
+
+                });
+
+            } else if (oldCompletion.exists()) {
+
+                // Not previously completed:
+                // remove an outdated completion record.
+                batch.delete(ref);
+
+            }
+
+        });
+
+        // ======================================
+        // COMMIT EVERYTHING AT ONCE
+        // ======================================
+
+        importButton.textContent = "Importing lessons...";
+
+        showMessage(
+            messageId,
+            "Saving your student's 12 lessons to Firebase..."
+        );
 
         await batch.commit();
 
-
+        // Reload the editor from Firestore.
         await loadStudentLessonEditor(
             currentStudentEmail,
             1
         );
 
-
         showMessage(
             messageId,
-            `Successfully imported 12 lessons. Restored ${completedCount} previously completed activities and published ${released} available activities.`,
+
+            `Import successful! 12 lessons transferred. ${released} activities published and ${completedCount} previous completions restored.`,
+
             "success"
         );
-
 
     } catch (error) {
 
         console.error(
-            "Legacy import failed:",
+            "FULL LEGACY IMPORT ERROR:",
             error
         );
 
+        const errorCode = error?.code || "unknown";
+
+        const errorDetails = error?.message
+            || String(error);
 
         showMessage(
             messageId,
-            "Import failed. Check that the administrator can access Firestore and try again.",
+
+            `Import failed (${errorCode}): ${errorDetails}`,
+
             "error"
         );
 
     } finally {
-
-        const importButton = element("import-legacy-lessons");
 
         importButton.disabled = false;
 
@@ -1406,6 +1508,7 @@ async function importLegacyLessons() {
     }
 
 }
+
 
 
 // ==========================================
