@@ -115,36 +115,48 @@ async function denyAccess(message) {
 
 
 // Check the account and its invitation
+
 async function routeSignedInUser(user) {
 
     const email = (user.email || "")
         .trim()
         .toLowerCase();
 
-    // Only accept verified Google email addresses.
+
+    // ======================================
+    // VERIFY GOOGLE ACCOUNT
+    // ======================================
+
     if (!user.emailVerified || !email) {
 
         await denyAccess(
-            "Google did not provide a verified email address. Please try again with your invited Gmail account."
+            "Please sign in using a verified Google account."
         );
 
         return;
     }
 
-    // Make sure administrator setup is complete.
-    if (!ADMIN_EMAIL || ADMIN_EMAIL.includes("YOUR_ADMIN_GMAIL")) {
+
+    if (
+        !ADMIN_EMAIL ||
+        ADMIN_EMAIL.includes("YOUR_ADMIN_GMAIL")
+    ) {
 
         await denyAccess(
-            "Setup is incomplete: add your administrator Gmail address in js/firebase.js first."
+            "Administrator configuration is incomplete."
         );
 
         return;
     }
 
-    // ADMIN LOGIN
 
-// ADMIN LOGIN
-    if (email === ADMIN_EMAIL) {
+    // ======================================
+    // ADMINISTRATOR
+    // ======================================
+
+    if (email === ADMIN_EMAIL.toLowerCase()) {
+
+        disposeStudentPortal();
 
         loginView.hidden = true;
         sessionView.hidden = true;
@@ -161,12 +173,12 @@ async function routeSignedInUser(user) {
         } catch (error) {
 
             console.error(
-                "Admin dashboard initialisation failed:",
+                "Admin dashboard error:",
                 error
             );
 
             showLogin(
-                "The administrator dashboard could not be opened. Please check your Firebase configuration and Firestore permissions."
+                "The administrator dashboard could not be loaded."
             );
 
         }
@@ -175,8 +187,10 @@ async function routeSignedInUser(user) {
     }
 
 
+    // ======================================
+    // STUDENT INVITATION
+    // ======================================
 
-    // STUDENT LOGIN
     try {
 
         const invitationRef = doc(
@@ -185,109 +199,87 @@ async function routeSignedInUser(user) {
             email
         );
 
-        const invitationSnapshot = await getDoc(invitationRef);
+        const invitationSnapshot = await getDoc(
+            invitationRef
+        );
 
-        // No invitation found.
+
         if (!invitationSnapshot.exists()) {
 
             await denyAccess(
-                "This Google account has not been invited yet. Please contact your teacher and ask them to add this Gmail address."
+                "This Google account has not been invited. Please contact your teacher."
             );
 
             return;
         }
 
+
         const invitation = invitationSnapshot.data();
 
-        const invitedEmail = String(invitation.email || "")
-            .trim()
-            .toLowerCase();
+        const invitedEmail = String(
+            invitation.email || ""
+        ).trim().toLowerCase();
+
 
         if (invitedEmail !== email) {
 
             await denyAccess(
-                "The invitation details do not match this Google account. Please contact your teacher."
+                "The invitation does not match this Google account."
             );
 
             return;
         }
 
-        // REVOKED ACCOUNT
-        if (invitation.status === "revoked") {
+
+        // ====================================
+        // ACCESS STATUS
+        // ====================================
+
+        if (
+            invitation.status !== "active" &&
+            invitation.status !== "paused"
+        ) {
 
             await denyAccess(
-                "Access to this learning portal has been revoked. Please contact your teacher if you think this is a mistake."
+                "Your portal access is currently unavailable. Please contact your teacher."
             );
 
             return;
         }
 
 
-        // PAUSED ACCOUNT
+        // ====================================
+        // OPEN PERSONAL STUDENT PORTAL
+        // ====================================
 
-        if (invitation.status === "paused") {
+        await initStudentPortal(
+            user,
+            invitation
+        );
 
-            try {
+        // IMPORTANT:
+        // Stop here. Never show the old testing screen
+        // after the student portal has loaded.
+        return;
 
-                await initStudentPortal(user, invitation);
-
-            } catch (error) {
-
-                console.error(
-                    "Paused student portal error:",
-                    error
-                );
-
-                await denyAccess(
-                    "Your learning history could not be loaded. Please contact your teacher."
-                );
-
-            }
-
-            return;
-        }
-
-
-
-
-// ACTIVE STUDENT
-        try {
-
-            await initStudentPortal(user, invitation);
-
-        } catch (error) {
-
-            console.error(
-                "Student portal initialisation failed:",
-                error
-            );
-
-            await denyAccess(
-                "Your personal learning portal could not be loaded. Please contact your teacher."
-            );
-
-        }
-
-
-        showSession({
-            role: "STUDENT ACCOUNT · INVITATION ACTIVE",
-            email,
-
-            heading: `Welcome${invitation.name ? `, ${invitation.name}` : ""}.`,
-
-            message:
-                "Your invitation has been verified. Your personal lessons, monthly progress and learning history will be connected to this account in the next implementation stage."
-        });
 
     } catch (error) {
 
-        console.error("Invitation verification failed:", error);
+        console.error(
+            "Student authentication or portal error:",
+            error
+        );
 
         await denyAccess(
-            "We could not verify your invitation. Check that Firestore rules are published and that your invitation document uses your Gmail address as its document ID."
+            "Your personal learning portal could not be loaded. Please check your connection or contact your teacher."
         );
+
+        return;
+
     }
+
 }
+
 
 
 // Google login button
@@ -361,6 +353,7 @@ async function startAuthentication() {
                 showLogin(loginNotice);
 
                 return;
+
             }
 
             if (routingUid === user.uid) return;
@@ -368,6 +361,7 @@ async function startAuthentication() {
             routingUid = user.uid;
 
             await routeSignedInUser(user);
+
         });
 
     } catch (error) {
