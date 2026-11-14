@@ -2,6 +2,12 @@
 import { auth, db, ADMIN_EMAIL } from "./firebase.js";
 
 import {
+    initAdminDashboard,
+    disposeAdminDashboard
+} from "./admin.js";
+
+
+import {
     GoogleAuthProvider,
     browserLocalPersistence,
     onAuthStateChanged,
@@ -18,6 +24,7 @@ import {
 // HTML elements
 const loginView = document.getElementById("auth-screen");
 const sessionView = document.getElementById("auth-session");
+const adminPanel = document.getElementById("admin-panel");
 
 const loginButton = document.getElementById("google-sign-in");
 const logoutButton = document.getElementById("google-sign-out");
@@ -49,8 +56,11 @@ let routingUid = null;
 // Show login screen
 function showLogin(message = loginNotice) {
 
+    disposeAdminDashboard();
+
     loginView.hidden = false;
     sessionView.hidden = true;
+    adminPanel.hidden = true;
 
     portalHeader.hidden = true;
     portalMain.hidden = true;
@@ -60,11 +70,15 @@ function showLogin(message = loginNotice) {
 }
 
 
+
 // Show authenticated account status
 function showSession({ role, email, heading, message }) {
 
+    disposeAdminDashboard();
+
     loginView.hidden = true;
     sessionView.hidden = false;
+    adminPanel.hidden = true;
 
     portalHeader.hidden = true;
     portalMain.hidden = true;
@@ -75,6 +89,7 @@ function showSession({ role, email, heading, message }) {
     sessionEmail.textContent = email;
     sessionMessage.textContent = message;
 }
+
 
 
 // Reject an account
@@ -118,20 +133,38 @@ async function routeSignedInUser(user) {
     }
 
     // ADMIN LOGIN
+
+// ADMIN LOGIN
     if (email === ADMIN_EMAIL) {
 
-        showSession({
-            role: "ADMIN ACCOUNT VERIFIED",
-            email,
+        loginView.hidden = true;
+        sessionView.hidden = true;
+        adminPanel.hidden = false;
 
-            heading: "Your administrator account is connected.",
+        portalHeader.hidden = true;
+        portalMain.hidden = true;
+        portalFooter.hidden = true;
 
-            message:
-                "Authentication is working. The private admin workspace and student management tools will be connected in the next implementation stage."
-        });
+        try {
+
+            await initAdminDashboard();
+
+        } catch (error) {
+
+            console.error(
+                "Admin dashboard initialisation failed:",
+                error
+            );
+
+            showLogin(
+                "The administrator dashboard could not be opened. Please check your Firebase configuration and Firestore permissions."
+            );
+
+        }
 
         return;
     }
+
 
 
     // STUDENT LOGIN

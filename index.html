@@ -116,6 +116,304 @@
   </section>
 
 
+  <!-- ==========================================
+       ADMIN DASHBOARD
+  ========================================== -->
+
+  <section id="admin-panel" class="admin-panel page-width" hidden>
+
+    <div class="admin-header">
+
+      <a href="#" class="auth-brand">
+        <span class="brand-mark">e<span>•</span>c</span>
+
+        <span class="brand-type">
+        ENGLISH
+        <strong>CONFIDENCE</strong>
+        <small>PERSONAL LANGUAGE STUDIO</small>
+      </span>
+      </a>
+
+      <div class="admin-header-right">
+
+      <span class="admin-user-label">
+        ADMINISTRATOR
+      </span>
+
+        <span id="admin-email-label" class="admin-email-label">
+      </span>
+
+        <button
+                type="button"
+                id="admin-sign-out"
+                class="auth-signout-btn"
+        >
+          Sign out
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- INTRODUCTION -->
+
+    <div class="admin-welcome">
+
+      <div>
+        <p class="auth-eyebrow">
+          YOUR TEACHING SPACE
+        </p>
+
+        <h1>
+          Manage their<br>
+          <em>growth.</em>
+        </h1>
+
+        <p>
+          Your students, their lessons and every step
+          of their English learning journey.
+        </p>
+      </div>
+
+      <div class="admin-welcome-decoration">
+        ✦
+      </div>
+
+    </div>
+
+
+    <!-- OVERVIEW -->
+
+    <div class="admin-metrics">
+
+      <div class="admin-metric">
+        <span>TOTAL STUDENTS</span>
+        <strong id="total-students">0</strong>
+        <small>Registered accounts</small>
+      </div>
+
+      <div class="admin-metric">
+        <span>ACTIVE</span>
+        <strong id="active-students">0</strong>
+        <small>Learning access enabled</small>
+      </div>
+
+      <div class="admin-metric">
+        <span>PAUSED</span>
+        <strong id="paused-students">0</strong>
+        <small>Access temporarily paused</small>
+      </div>
+
+    </div>
+
+
+    <!-- STUDENT MANAGEMENT -->
+
+    <div class="admin-section-heading">
+
+      <div>
+        <p class="admin-section-kicker">
+          STUDENT MANAGEMENT
+        </p>
+
+        <h2>Your students.</h2>
+      </div>
+
+      <span class="admin-section-note">
+      Manage each journey individually.
+    </span>
+
+    </div>
+
+
+    <div class="admin-grid">
+
+
+      <!-- INVITE STUDENT -->
+
+      <section class="admin-card">
+
+        <div class="admin-card-heading">
+          <span class="admin-icon">✧</span>
+
+          <div>
+            <h3>Invite a student</h3>
+            <p>Create a personal learning account.</p>
+          </div>
+        </div>
+
+
+        <form id="student-invite-form">
+
+          <label for="student-name">
+            Student's full name
+          </label>
+
+          <input
+                  id="student-name"
+                  type="text"
+                  placeholder="e.g. Maria Silva"
+                  maxlength="100"
+                  required
+          />
+
+
+          <label for="student-email">
+            Student's Gmail address
+          </label>
+
+          <input
+                  id="student-email"
+                  type="email"
+                  placeholder="student@gmail.com"
+                  autocomplete="off"
+                  maxlength="254"
+                  required
+          />
+
+
+          <button
+                  type="submit"
+                  id="invite-student-button"
+                  class="primary-btn admin-invite-button"
+          >
+            <span>Create invitation</span>
+            <span aria-hidden="true">↗</span>
+          </button>
+
+
+          <p
+                  id="invite-message"
+                  class="admin-form-message"
+                  role="status"
+                  aria-live="polite"
+          ></p>
+
+        </form>
+
+        <div class="admin-invite-note">
+          Students must sign in using the exact Google
+          account you register here.
+        </div>
+
+      </section>
+
+
+      <!-- STUDENT LIST -->
+
+      <section class="admin-card admin-students-card">
+
+        <div class="admin-card-heading">
+
+          <span class="admin-icon">◈</span>
+
+          <div>
+            <h3>Student directory</h3>
+            <p>Your personalised English courses.</p>
+          </div>
+
+        </div>
+
+
+        <input
+                type="search"
+                id="student-search"
+                class="student-search"
+                placeholder="Search by name or email..."
+        />
+
+
+        <div
+                id="admin-students-list"
+                class="admin-students-list"
+                aria-live="polite"
+        >
+          <p class="admin-empty">
+            Loading student records...
+          </p>
+        </div>
+
+      </section>
+
+    </div>
+
+
+    <!-- SELECTED STUDENT -->
+
+    <section
+            id="admin-student-detail"
+            class="admin-student-detail"
+            hidden
+    >
+
+      <div class="admin-detail-heading">
+
+        <div>
+          <p class="admin-section-kicker">
+            PERSONAL STUDENT SPACE
+          </p>
+
+          <h2 id="detail-student-name">
+            Student details
+          </h2>
+
+          <p id="detail-student-email"></p>
+        </div>
+
+        <span id="detail-student-status" class="admin-status">
+      </span>
+
+      </div>
+
+
+      <div class="admin-detail-grid">
+
+        <div class="admin-detail-item">
+          <span>ACCESS STATUS</span>
+          <strong id="detail-access-value">Active</strong>
+        </div>
+
+        <div class="admin-detail-item">
+          <span>CURRENT MONTH</span>
+          <strong id="detail-month-value">Month 1</strong>
+        </div>
+
+        <div class="admin-detail-item">
+          <span>ACCOUNT CREATED</span>
+          <strong id="detail-created-value">—</strong>
+        </div>
+
+      </div>
+
+
+      <div class="admin-coming-soon">
+        <span>✦</span>
+
+        <div>
+          <strong>Monthly learning management</strong>
+
+          <p>
+            Lesson topics, personalised materials,
+            video and podcast links, and teacher-controlled
+            completion will be available in the next stage.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <footer class="admin-footer">
+      ENGLISH CONFIDENCE · PERSONAL LANGUAGE STUDIO
+      <span>MADE FOR GROWTH ✦</span>
+    </footer>
+
+  </section>
+
+
+
   <header class="topbar page-width" hidden>
     <a href="#inicio" class="brand" aria-label="English Confidence — Início">
       <span class="brand-mark">e<span>•</span>c</span>
