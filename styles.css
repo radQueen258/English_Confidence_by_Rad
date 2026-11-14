@@ -1520,3 +1520,599 @@
 
 }
 
+
+
+/* ==========================================
+   STAGE 5 — FEEDBACK AND RENEWALS
+========================================== */
+
+.month-end-section {
+    padding-top: 75px;
+    padding-bottom: 75px;
+    border-top: 1px solid var(--line);
+}
+
+.month-end-section[hidden] {
+    display: none !important;
+}
+
+.month-end-section .section-heading {
+    margin-bottom: 35px;
+}
+
+.month-end-section .section-heading h2 {
+    font: 500 clamp(38px,5vw,56px)/1.12
+    'Playfair Display',Georgia,serif;
+    letter-spacing: -2px;
+}
+
+.month-end-section .section-heading h2 em {
+    color: #8472cc;
+    font-style: normal;
+}
+
+.month-end-star {
+    color: #aa98e3;
+    font-size: 65px;
+}
+
+.month-end-grid {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 19px;
+    align-items: start;
+}
+
+.month-end-card {
+    padding: 34px;
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: var(--shadow);
+    min-width: 0;
+}
+
+.feedback-card {
+    background: linear-gradient(145deg,#fff,#f8f5ff);
+}
+
+.renewal-card {
+    background: linear-gradient(145deg,#fff,#f0f7f3);
+}
+
+.month-end-card-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 14px;
+    background: #eee9fa;
+    color: #7765ce;
+    display: grid;
+    place-items: center;
+    font-size: 23px;
+    margin-bottom: 23px;
+}
+
+.renewal-card .month-end-card-icon {
+    background: #e1f0e9;
+    color: #488b76;
+}
+
+.month-end-kicker {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.7px;
+    color: #8a7ab6;
+    margin-bottom: 12px;
+}
+
+.month-end-card h3 {
+    font: 500 27px/1.25 'Playfair Display',Georgia,serif;
+    letter-spacing: -.6px;
+    margin: 0 0 12px;
+}
+
+.month-end-description {
+    color: #817994;
+    font-size: 11px;
+    line-height: 1.9;
+    margin-bottom: 25px;
+    max-width: 420px;
+}
+
+.month-end-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.month-end-card label {
+    font-size: 10px;
+    font-weight: 800;
+    color: #645e7e;
+    margin-top: 10px;
+}
+
+.month-end-card input:not([type="file"]),
+.month-end-card select,
+.month-end-card textarea {
+    width: 100%;
+    border: 1px solid #e5e0f0;
+    background: #fff;
+    border-radius: 12px;
+    padding: 13px 14px;
+    color: #171333;
+    font: 11px/1.7 'DM Sans',sans-serif;
+    outline: none;
+}
+
+.month-end-card textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+.month-end-card input:focus,
+.month-end-card textarea:focus,
+.month-end-card select:focus {
+    border-color: #a99be8;
+    box-shadow: 0 0 0 3px #a99be828;
+}
+
+.month-end-submit {
+    margin-top: 15px;
+    width: 100%;
+    border: 0;
+    cursor: pointer;
+    text-align: center;
+    justify-content: center;
+}
+
+.month-end-submit:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.month-end-message {
+    color: #817994;
+    font-size: 10px;
+    line-height: 1.7;
+    margin-top: 13px;
+    overflow-wrap: anywhere;
+}
+
+.month-end-message[data-type="error"] {
+    color: #b65d79;
+}
+
+.month-end-message[data-type="success"] {
+    color: #438b77;
+}
+
+.month-end-result {
+    padding: 22px;
+    border-radius: 15px;
+    background: #e1f0e9;
+    color: #438b77;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.month-end-result > span {
+    font-size: 24px;
+}
+
+.month-end-result strong {
+    font: 500 19px 'Playfair Display',Georgia,serif;
+}
+
+.month-end-result p {
+    font-size: 10px;
+    line-height: 1.8;
+}
+
+.feedback-answer {
+    margin-top: 15px;
+    border: 1px solid #e5e0f0;
+    border-radius: 13px;
+    padding: 16px;
+    background: #fff;
+    overflow-wrap: anywhere;
+}
+
+.feedback-answer strong,
+.feedback-answer b {
+    color: #796ab2;
+    font-size: 10px;
+}
+
+.feedback-answer p {
+    color: #645e7e;
+    font-size: 11px;
+    line-height: 1.8;
+    margin-top: 7px;
+    white-space: pre-wrap;
+}
+
+.student-renewal-panel {
+    margin-top: 20px;
+}
+
+.student-renewal-panel[hidden] {
+    display: none !important;
+}
+
+.renewal-divider {
+    height: 1px;
+    background: #e2e9e4;
+    margin: 25px 0;
+}
+
+.renewal-step-title {
+    color: #8b806c;
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: 1.3px;
+    margin-bottom: 13px;
+}
+
+.renewal-payment-details {
+    border: 1px solid #dcece3;
+    background: #f8fcfa;
+    border-radius: 14px;
+    padding: 16px;
+    color: #645e7e;
+    font-size: 10px;
+    line-height: 1.7;
+    margin: 12px 0;
+    overflow-wrap: anywhere;
+}
+
+.payment-details-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.payment-detail-method {
+    color: #488b76;
+    font-weight: 900;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.payment-details-content > span {
+    color: #92899d;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.payment-details-content > strong {
+    color: #554b75;
+    font-size: 12px;
+}
+
+.payment-instructions {
+    border-top: 1px solid #e2ece5;
+    padding-top: 12px;
+    margin-top: 8px;
+    white-space: pre-wrap;
+}
+
+.renewal-file-hint {
+    color: #817994;
+    font-size: 9px;
+    line-height: 1.8;
+}
+
+.renewal-proof-preview-box {
+    margin-top: 15px;
+    padding: 13px;
+    border: 1px solid #dcece3;
+    border-radius: 14px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.renewal-proof-preview-box[hidden] {
+    display: none !important;
+}
+
+.renewal-proof-preview-box img {
+    display: block;
+    width: 100%;
+    max-height: 280px;
+    object-fit: contain;
+    background: #f8f7fb;
+    border-radius: 9px;
+}
+
+.renewal-proof-preview-box span {
+    color: #488b76;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.renewal-status {
+    margin-top: 20px;
+    padding: 19px;
+    border: 1px solid #dcece3;
+    border-radius: 15px;
+    background: #f1f8f4;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.renewal-status[hidden] {
+    display: none !important;
+}
+
+.renewal-status-icon {
+    font-size: 24px;
+    color: #488b76;
+}
+
+.renewal-status strong {
+    font: 500 19px 'Playfair Display',Georgia,serif;
+    color: #488b76;
+}
+
+.renewal-status p {
+    color: #817994;
+    font-size: 10px;
+    line-height: 1.8;
+}
+
+
+/* ==========================================
+   STAGE 5 — ADMIN INBOXES
+========================================== */
+
+.stage5-admin-section {
+    margin-top: 55px;
+    border-top: 1px solid var(--line);
+    padding-top: 35px;
+}
+
+.admin-settings-intro {
+    color: #817994;
+    font-size: 11px;
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+.payment-settings-card {
+    max-width: 100%;
+}
+
+#payment-settings-form {
+    display: grid;
+    grid-template-columns: repeat(3,minmax(0,1fr));
+    gap: 15px;
+}
+
+.payment-method-admin {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border: 1px solid #e5e0f0;
+    border-radius: 16px;
+    padding: 18px;
+    background: #fdfcff;
+    min-width: 0;
+}
+
+.payment-enabled-label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 12px;
+    color: #7765ce;
+}
+
+.payment-enabled-label input {
+    accent-color: #7765ce;
+}
+
+.payment-method-admin label:not(.payment-enabled-label) {
+    font-size: 9px;
+    color: #645e7e;
+    font-weight: 800;
+    margin-top: 5px;
+}
+
+.payment-method-admin input,
+.payment-method-admin textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #e5e0f0;
+    border-radius: 9px;
+    padding: 11px;
+    font: 10px 'DM Sans',sans-serif;
+    background: #fff;
+    color: #171333;
+    outline: none;
+}
+
+.payment-method-admin textarea {
+    resize: vertical;
+}
+
+.payment-method-admin input:focus,
+.payment-method-admin textarea:focus {
+    border-color: #a99be8;
+}
+
+#save-payment-settings {
+    grid-column: 1/-1;
+    border: 0;
+    cursor: pointer;
+}
+
+.stage5-submission-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.stage5-submission-card {
+    border: 1px solid var(--line);
+    background: #fff;
+    box-shadow: var(--shadow);
+    border-radius: 19px;
+    padding: 24px;
+    min-width: 0;
+}
+
+.stage5-submission-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 18px;
+}
+
+.stage5-submission-heading h3 {
+    font: 500 23px 'Playfair Display',Georgia,serif;
+    margin: 0 0 5px;
+}
+
+.stage5-submission-heading p:not(.admin-section-kicker) {
+    color: #817994;
+    font-size: 10px;
+    overflow-wrap: anywhere;
+}
+
+.stage5-submission-date {
+    color: #938aa1;
+    font-size: 9px;
+    margin-top: 16px;
+}
+
+.renewal-admin-details {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 10px;
+    margin: 17px 0;
+    padding: 17px;
+    border-radius: 14px;
+    background: #f8f6fc;
+}
+
+.renewal-admin-details span {
+    color: #938aa1;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.renewal-admin-details strong {
+    color: #645e7e;
+    font-size: 11px;
+    overflow-wrap: anywhere;
+}
+
+.renewal-admin-proof {
+    border-top: 1px solid var(--line);
+    padding-top: 17px;
+    margin-top: 17px;
+}
+
+.renewal-admin-proof > p {
+    font-size: 9px;
+    color: #8a7ab6;
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin-bottom: 13px;
+}
+
+.renewal-admin-proof img {
+    max-width: 100%;
+    width: 480px;
+    max-height: 440px;
+    object-fit: contain;
+    background: #faf9fc;
+    border-radius: 12px;
+    border: 1px solid #e5e0f0;
+    cursor: zoom-in;
+}
+
+.renewal-admin-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 11px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.renewal-admin-actions .primary-btn {
+    border: 0;
+    cursor: pointer;
+}
+
+.renewal-admin-actions button:disabled {
+    opacity: .5;
+    cursor: wait;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media(max-width:950px) {
+
+    .month-end-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #payment-settings-form {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media(max-width:580px) {
+
+    .month-end-section {
+        padding-top: 48px;
+        padding-bottom: 48px;
+    }
+
+    .month-end-card {
+        padding: 22px;
+    }
+
+    .month-end-card h3 {
+        font-size: 23px;
+    }
+
+    .month-end-star {
+        font-size: 42px;
+    }
+
+    .stage5-submission-card {
+        padding: 17px;
+    }
+
+    .stage5-submission-heading {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .renewal-admin-details {
+        grid-template-columns: 1fr;
+    }
+
+    .renewal-admin-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+}
+

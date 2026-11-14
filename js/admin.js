@@ -1,6 +1,11 @@
 
 import { auth, db, ADMIN_EMAIL } from "./firebase.js";
 
+import {
+    setupStage5Admin,
+    disposeStage5Admin
+} from "./stage5-admin.js";
+
 
 import {
     setupLessonEditor,
@@ -879,6 +884,8 @@ export async function initAdminDashboard() {
 
     listenToStudents();
 
+    await setupStage5Admin();
+
 }
 
 
@@ -887,6 +894,8 @@ export async function initAdminDashboard() {
 // ==========================================
 
 export function disposeAdminDashboard() {
+
+    disposeStage5Admin();
 
     if (unsubscribeStudents) {
 

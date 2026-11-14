@@ -1,111 +1,164 @@
+
 <!doctype html>
 <html lang="pt">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#eeebfb" />
   <meta name="description" content="O teu espaço pessoal para aprender a comunicar em inglês com confiança, ao teu ritmo." />
+
   <title>English Confidence — Your Learning Space</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="./styles.css" />
+
   <script type="module" src="./js/auth.js"></script>
 </head>
+
 <body>
-  <div class="ambient ambient-a" aria-hidden="true"></div>
-  <div class="ambient ambient-b" aria-hidden="true"></div>
+
+<div class="ambient ambient-a" aria-hidden="true"></div>
+<div class="ambient ambient-b" aria-hidden="true"></div>
 
 
-  <section class="auth-screen page-width" id="auth-screen">
+<!-- ==========================================
+     GOOGLE AUTHENTICATION
+========================================== -->
 
-    <div class="auth-card">
+<section class="auth-screen page-width" id="auth-screen">
 
-      <a href="#" class="auth-brand">
-        <span class="brand-mark">e<span>•</span>c</span>
+  <div class="auth-card">
 
-        <span class="brand-type">
+    <a href="#" class="auth-brand">
+      <span class="brand-mark">e<span>•</span>c</span>
+
+      <span class="brand-type">
         ENGLISH
         <strong>CONFIDENCE</strong>
         <small>PERSONAL LANGUAGE STUDIO</small>
       </span>
-      </a>
+    </a>
 
-      <p class="auth-eyebrow">
-        YOUR PERSONAL LEARNING SPACE
-      </p>
+    <p class="auth-eyebrow">
+      YOUR PERSONAL LEARNING SPACE
+    </p>
 
-      <h1>
-        Your voice.<br>
-        <em>Your pace.</em>
-      </h1>
+    <h1>
+      Your voice.<br>
+      <em>Your pace.</em>
+    </h1>
 
-      <p class="auth-intro">
-        Your English journey is personal.
-        Sign in to access your lessons,
-        progress and learning materials.
-      </p>
+    <p class="auth-intro">
+      Your English journey is personal.
+      Sign in to access your lessons,
+      progress and learning materials.
+    </p>
 
-      <button
-              type="button"
-              id="google-sign-in"
-              class="primary-btn auth-google-btn"
-      >
-        <span class="google-letter">G</span>
-        <span>Continue with Google</span>
-        <span>↗</span>
-      </button>
+    <button
+            type="button"
+            id="google-sign-in"
+            class="primary-btn auth-google-btn"
+    >
+      <span class="google-letter">G</span>
+      <span>Continue with Google</span>
+      <span>↗</span>
+    </button>
 
-      <p
-              id="auth-message"
-              class="auth-message"
-              role="status"
-              aria-live="polite"
-      >
-        Access is by invitation only.
-      </p>
+    <p
+            id="auth-message"
+            class="auth-message"
+            role="status"
+            aria-live="polite"
+    >
+      Access is by invitation only.
+    </p>
 
-      <div class="auth-bottom">
-        PRIVATE LEARNING SPACE · ENGLISH CONFIDENCE
-      </div>
-
+    <div class="auth-bottom">
+      PRIVATE LEARNING SPACE · ENGLISH CONFIDENCE
     </div>
 
-    <div class="auth-decoration" aria-hidden="true">
-      <div class="auth-decoration-orbit"></div>
-      <div class="auth-decoration-sphere"></div>
-      <span>GROW AT YOUR PACE ✦</span>
-    </div>
+  </div>
 
-  </section>
+  <div class="auth-decoration" aria-hidden="true">
+    <div class="auth-decoration-orbit"></div>
+    <div class="auth-decoration-sphere"></div>
+    <span>GROW AT YOUR PACE ✦</span>
+  </div>
+
+</section>
 
 
-  <!-- This screen appears after successful authentication -->
+<!-- ==========================================
+     AUTHENTICATED SESSION FALLBACK
+========================================== -->
 
-  <section
-          class="auth-session page-width"
-          id="auth-session"
-          hidden
-  >
+<section
+        class="auth-session page-width"
+        id="auth-session"
+        hidden
+>
 
-    <div class="auth-session-card">
+  <div class="auth-session-card">
+
+    <span class="brand-mark">e<span>•</span>c</span>
+
+    <p id="auth-role-tag" class="auth-eyebrow"></p>
+
+    <h1 id="auth-heading"></h1>
+
+    <p id="auth-user-email" class="auth-user-email"></p>
+
+    <p id="auth-session-message" class="auth-intro"></p>
+
+    <button
+            type="button"
+            id="google-sign-out"
+            class="auth-signout-btn"
+    >
+      Sign out
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- ==========================================
+     ADMIN DASHBOARD
+========================================== -->
+
+<section id="admin-panel" class="admin-panel page-width" hidden>
+
+  <div class="admin-header">
+
+    <a href="#" class="auth-brand">
 
       <span class="brand-mark">e<span>•</span>c</span>
 
-      <p id="auth-role-tag" class="auth-eyebrow"></p>
+      <span class="brand-type">
+        ENGLISH
+        <strong>CONFIDENCE</strong>
+        <small>PERSONAL LANGUAGE STUDIO</small>
+      </span>
 
-      <h1 id="auth-heading"></h1>
+    </a>
 
-      <p id="auth-user-email" class="auth-user-email"></p>
+    <div class="admin-header-right">
 
-      <p
-              id="auth-session-message"
-              class="auth-intro"
-      ></p>
+      <span class="admin-user-label">
+        ADMINISTRATOR
+      </span>
+
+      <span id="admin-email-label" class="admin-email-label"></span>
 
       <button
               type="button"
-              id="google-sign-out"
+              id="admin-sign-out"
               class="auth-signout-btn"
       >
         Sign out
@@ -113,862 +166,1875 @@
 
     </div>
 
+  </div>
+
+
+  <!-- ADMIN INTRODUCTION -->
+
+  <div class="admin-welcome">
+
+    <div>
+
+      <p class="auth-eyebrow">
+        YOUR TEACHING SPACE
+      </p>
+
+      <h1>
+        Manage their<br>
+        <em>growth.</em>
+      </h1>
+
+      <p>
+        Your students, their lessons and every step
+        of their English learning journey.
+      </p>
+
+    </div>
+
+    <div class="admin-welcome-decoration">
+      ✦
+    </div>
+
+  </div>
+
+
+  <!-- ADMIN OVERVIEW -->
+
+  <div class="admin-metrics">
+
+    <div class="admin-metric">
+      <span>TOTAL STUDENTS</span>
+      <strong id="total-students">0</strong>
+      <small>Registered accounts</small>
+    </div>
+
+    <div class="admin-metric">
+      <span>ACTIVE</span>
+      <strong id="active-students">0</strong>
+      <small>Learning access enabled</small>
+    </div>
+
+    <div class="admin-metric">
+      <span>PAUSED</span>
+      <strong id="paused-students">0</strong>
+      <small>Access temporarily paused</small>
+    </div>
+
+  </div>
+
+
+  <!-- STUDENT MANAGEMENT -->
+
+  <div class="admin-section-heading">
+
+    <div>
+
+      <p class="admin-section-kicker">
+        STUDENT MANAGEMENT
+      </p>
+
+      <h2>Your students.</h2>
+
+    </div>
+
+    <span class="admin-section-note">
+      Manage each journey individually.
+    </span>
+
+  </div>
+
+
+  <div class="admin-grid">
+
+
+    <!-- INVITE STUDENT -->
+
+    <section class="admin-card">
+
+      <div class="admin-card-heading">
+
+        <span class="admin-icon">✧</span>
+
+        <div>
+          <h3>Invite a student</h3>
+          <p>Create a personal learning account.</p>
+        </div>
+
+      </div>
+
+
+      <form id="student-invite-form">
+
+        <label for="student-name">
+          Student's full name
+        </label>
+
+        <input
+                id="student-name"
+                type="text"
+                placeholder="e.g. Maria Silva"
+                maxlength="100"
+                required
+        />
+
+        <label for="student-email">
+          Student's Gmail address
+        </label>
+
+        <input
+                id="student-email"
+                type="email"
+                placeholder="student@gmail.com"
+                autocomplete="off"
+                maxlength="254"
+                required
+        />
+
+        <button
+                type="submit"
+                id="invite-student-button"
+                class="primary-btn admin-invite-button"
+        >
+          <span>Create invitation</span>
+          <span aria-hidden="true">↗</span>
+        </button>
+
+        <p
+                id="invite-message"
+                class="admin-form-message"
+                role="status"
+                aria-live="polite"
+        ></p>
+
+      </form>
+
+      <div class="admin-invite-note">
+        Students must sign in using the exact Google
+        account you register here.
+      </div>
+
+    </section>
+
+
+    <!-- STUDENT DIRECTORY -->
+
+    <section class="admin-card admin-students-card">
+
+      <div class="admin-card-heading">
+
+        <span class="admin-icon">◈</span>
+
+        <div>
+          <h3>Student directory</h3>
+          <p>Your personalised English courses.</p>
+        </div>
+
+      </div>
+
+      <input
+              type="search"
+              id="student-search"
+              class="student-search"
+              placeholder="Search by name or email..."
+      />
+
+      <div
+              id="admin-students-list"
+              class="admin-students-list"
+              aria-live="polite"
+      >
+
+        <p class="admin-empty">
+          Loading student records...
+        </p>
+
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <!-- ==========================================
+       SELECTED STUDENT
+  ========================================== -->
+
+  <section
+          id="admin-student-detail"
+          class="admin-student-detail"
+          hidden
+  >
+
+    <div class="admin-detail-heading">
+
+      <div>
+
+        <p class="admin-section-kicker">
+          PERSONAL STUDENT SPACE
+        </p>
+
+        <h2 id="detail-student-name">
+          Student details
+        </h2>
+
+        <p id="detail-student-email"></p>
+
+      </div>
+
+      <span id="detail-student-status" class="admin-status"></span>
+
+    </div>
+
+
+    <div class="admin-detail-grid">
+
+      <div class="admin-detail-item">
+        <span>ACCESS STATUS</span>
+        <strong id="detail-access-value">Active</strong>
+      </div>
+
+      <div class="admin-detail-item">
+        <span>CURRENT MONTH</span>
+        <strong id="detail-month-value">Month 1</strong>
+      </div>
+
+      <div class="admin-detail-item">
+        <span>ACCOUNT CREATED</span>
+        <strong id="detail-created-value">—</strong>
+      </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         PERSONAL LESSON MANAGEMENT
+    ========================================== -->
+
+    <section id="lesson-management" class="lesson-management">
+
+      <div class="lesson-management-heading">
+
+        <div>
+
+          <p class="admin-section-kicker">
+            INDIVIDUAL LEARNING JOURNEY
+          </p>
+
+          <h3>Personalise their lessons.</h3>
+
+          <p>
+            Every student has a different journey.
+            Make every activity count.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- MONTH SELECTOR -->
+
+      <div class="lesson-toolbar">
+
+        <div>
+
+          <label for="admin-month-select">
+            SELECT MONTH
+          </label>
+
+          <select id="admin-month-select">
+
+            <option value="1">Month 1</option>
+            <option value="2">Month 2</option>
+            <option value="3">Month 3</option>
+            <option value="4">Month 4</option>
+            <option value="5">Month 5</option>
+            <option value="6">Month 6</option>
+            <option value="7">Month 7</option>
+            <option value="8">Month 8</option>
+            <option value="9">Month 9</option>
+            <option value="10">Month 10</option>
+            <option value="11">Month 11</option>
+            <option value="12">Month 12</option>
+
+          </select>
+
+        </div>
+
+        <div class="legacy-import-area">
+
+          <button
+                  type="button"
+                  id="import-legacy-lessons"
+                  class="student-action-button"
+          >
+            Import existing lessons
+          </button>
+
+          <p id="legacy-import-message">
+            Transfer content from your previous student files.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- LESSON EDITOR -->
+
+      <div class="lesson-editor-layout">
+
+
+        <!-- LESSON NAVIGATION -->
+
+        <aside class="lesson-editor-sidebar">
+
+          <div class="lesson-editor-sidebar-heading">
+
+            <span>MONTHLY PROGRAMME</span>
+
+            <strong>12 activities</strong>
+
+          </div>
+
+          <div
+                  id="admin-lesson-list"
+                  class="admin-lesson-list"
+          >
+
+            <p class="admin-empty">
+              Select a student to load their lessons.
+            </p>
+
+          </div>
+
+        </aside>
+
+
+        <!-- LESSON FORM -->
+
+        <section class="lesson-editor-main">
+
+          <form id="admin-lesson-form">
+
+            <div class="lesson-form-heading">
+
+              <div>
+
+                <p class="admin-section-kicker">
+                  EDITING LESSON
+                </p>
+
+                <h3 id="editor-lesson-heading">
+                  Lesson 01
+                </h3>
+
+                <p id="editor-lesson-type">
+                  Live conversation
+                </p>
+
+              </div>
+
+              <span
+                      id="editor-lesson-status"
+                      class="admin-status status-paused"
+              >
+                Not published
+              </span>
+
+            </div>
+
+
+            <!-- PORTUGUESE CONTENT -->
+
+            <div class="lesson-language-section">
+
+              <div class="lesson-language-heading">
+                <span>PT</span>
+                <strong>Português</strong>
+              </div>
+
+              <label for="lesson-pt-title">
+                Título da aula
+              </label>
+
+              <input
+                      id="lesson-pt-title"
+                      type="text"
+                      maxlength="180"
+                      placeholder="Título em português"
+              />
+
+              <label for="lesson-pt-subtitle">
+                Subtítulo
+              </label>
+
+              <input
+                      id="lesson-pt-subtitle"
+                      type="text"
+                      maxlength="220"
+                      placeholder="Subtítulo da aula"
+              />
+
+              <label for="lesson-pt-goal">
+                Objectivo da aula
+              </label>
+
+              <textarea
+                      id="lesson-pt-goal"
+                      rows="4"
+                      placeholder="O que vão aprender nesta aula?"
+              ></textarea>
+
+              <label for="lesson-pt-vocabulary">
+                Vocabulário
+              </label>
+
+              <textarea
+                      id="lesson-pt-vocabulary"
+                      rows="7"
+                      placeholder="Early | Cedo&#10;Usually | Normalmente&#10;Improve | Melhorar"
+              ></textarea>
+
+              <p class="lesson-field-hint">
+                Escreve uma palavra ou expressão por linha,
+                separada da tradução por uma barra vertical: |
+              </p>
+
+              <label for="lesson-pt-phrases">
+                Expressões úteis
+              </label>
+
+              <textarea
+                      id="lesson-pt-phrases"
+                      rows="6"
+                      placeholder="I usually wake up early. — Costumo acordar cedo."
+              ></textarea>
+
+              <p class="lesson-field-hint">
+                Uma expressão por linha.
+              </p>
+
+              <label for="lesson-pt-prompts">
+                Perguntas para conversar
+              </label>
+
+              <textarea
+                      id="lesson-pt-prompts"
+                      rows="5"
+                      placeholder="Como descreverias a tua rotina?"
+              ></textarea>
+
+            </div>
+
+
+            <!-- ENGLISH CONTENT -->
+
+            <div class="lesson-language-section">
+
+              <div class="lesson-language-heading">
+                <span>EN</span>
+                <strong>English</strong>
+              </div>
+
+              <label for="lesson-en-title">
+                Lesson title
+              </label>
+
+              <input
+                      id="lesson-en-title"
+                      type="text"
+                      maxlength="180"
+                      placeholder="Lesson title in English"
+              />
+
+              <label for="lesson-en-subtitle">
+                Subtitle
+              </label>
+
+              <input
+                      id="lesson-en-subtitle"
+                      type="text"
+                      maxlength="220"
+                      placeholder="Lesson subtitle"
+              />
+
+              <label for="lesson-en-goal">
+                Learning objective
+              </label>
+
+              <textarea
+                      id="lesson-en-goal"
+                      rows="4"
+                      placeholder="What will the student learn?"
+              ></textarea>
+
+              <label for="lesson-en-vocabulary">
+                Vocabulary
+              </label>
+
+              <textarea
+                      id="lesson-en-vocabulary"
+                      rows="7"
+                      placeholder="Early | Before the usual time&#10;Usually | Most of the time"
+              ></textarea>
+
+              <p class="lesson-field-hint">
+                One word or expression per line.
+                Separate the expression and definition with |
+              </p>
+
+              <label for="lesson-en-phrases">
+                Useful phrases
+              </label>
+
+              <textarea
+                      id="lesson-en-phrases"
+                      rows="6"
+                      placeholder="I usually wake up early."
+              ></textarea>
+
+              <label for="lesson-en-prompts">
+                Discussion questions
+              </label>
+
+              <textarea
+                      id="lesson-en-prompts"
+                      rows="5"
+                      placeholder="How would you describe your daily routine?"
+              ></textarea>
+
+            </div>
+
+
+            <!-- PODCAST CONTENT -->
+
+            <div
+                    id="podcast-editor"
+                    class="lesson-language-section podcast-editor"
+                    hidden
+            >
+
+              <div class="lesson-language-heading">
+                <span>♫</span>
+                <strong>Self-paced learning activity</strong>
+              </div>
+
+              <label for="lesson-podcast-title">
+                Podcast or video title
+              </label>
+
+              <input
+                      id="lesson-podcast-title"
+                      type="text"
+                      maxlength="200"
+                      placeholder="e.g. Listening & Comprehension"
+              />
+
+              <label for="lesson-podcast-url">
+                Video or podcast link
+              </label>
+
+              <input
+                      id="lesson-podcast-url"
+                      type="url"
+                      maxlength="1000"
+                      placeholder="https://www.youtube.com/..."
+              />
+
+              <p class="lesson-field-hint">
+                Only HTTPS or HTTP links are accepted.
+              </p>
+
+            </div>
+
+
+            <!-- PUBLISHING -->
+
+            <div class="lesson-publish-section">
+
+              <label class="lesson-publish-toggle">
+
+                <input
+                        type="checkbox"
+                        id="lesson-published"
+                />
+
+                <span>
+
+                  <strong>Publish this lesson</strong>
+
+                  <small>
+                    Make this lesson available to the student
+                    when their previous activity is complete.
+                  </small>
+
+                </span>
+
+              </label>
+
+            </div>
+
+
+            <div class="lesson-editor-actions">
+
+              <button
+                      type="submit"
+                      id="save-lesson-button"
+                      class="primary-btn"
+              >
+                Save lesson changes ↗
+              </button>
+
+            </div>
+
+            <p
+                    id="lesson-save-message"
+                    class="admin-form-message"
+                    role="status"
+                    aria-live="polite"
+            ></p>
+
+          </form>
+
+
+          <!-- TEACHER COMPLETION -->
+
+          <div class="teacher-completion-panel">
+
+            <p class="admin-section-kicker">
+              ACTIVITY COMPLETION
+            </p>
+
+            <div id="teacher-completion-content">
+
+              <p>
+                Select a lesson to manage its completion.
+              </p>
+
+            </div>
+
+            <button
+                    type="button"
+                    id="teacher-complete-button"
+                    class="student-action-button"
+                    hidden
+            >
+              Mark as completed
+            </button>
+
+            <p
+                    id="teacher-completion-message"
+                    class="admin-form-message"
+                    role="status"
+                    aria-live="polite"
+            ></p>
+
+          </div>
+
+        </section>
+
+      </div>
+
+    </section>
+
   </section>
 
 
   <!-- ==========================================
-       ADMIN DASHBOARD
+       ADMIN PAYMENT SETTINGS
   ========================================== -->
 
-  <section id="admin-panel" class="admin-panel page-width" hidden>
-
-    <div class="admin-header">
-
-      <a href="#" class="auth-brand">
-        <span class="brand-mark">e<span>•</span>c</span>
-
-        <span class="brand-type">
-        ENGLISH
-        <strong>CONFIDENCE</strong>
-        <small>PERSONAL LANGUAGE STUDIO</small>
-      </span>
-      </a>
-
-      <div class="admin-header-right">
-
-      <span class="admin-user-label">
-        ADMINISTRATOR
-      </span>
-
-        <span id="admin-email-label" class="admin-email-label">
-      </span>
-
-        <button
-                type="button"
-                id="admin-sign-out"
-                class="auth-signout-btn"
-        >
-          Sign out
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <!-- INTRODUCTION -->
-
-    <div class="admin-welcome">
-
-      <div>
-        <p class="auth-eyebrow">
-          YOUR TEACHING SPACE
-        </p>
-
-        <h1>
-          Manage their<br>
-          <em>growth.</em>
-        </h1>
-
-        <p>
-          Your students, their lessons and every step
-          of their English learning journey.
-        </p>
-      </div>
-
-      <div class="admin-welcome-decoration">
-        ✦
-      </div>
-
-    </div>
-
-
-    <!-- OVERVIEW -->
-
-    <div class="admin-metrics">
-
-      <div class="admin-metric">
-        <span>TOTAL STUDENTS</span>
-        <strong id="total-students">0</strong>
-        <small>Registered accounts</small>
-      </div>
-
-      <div class="admin-metric">
-        <span>ACTIVE</span>
-        <strong id="active-students">0</strong>
-        <small>Learning access enabled</small>
-      </div>
-
-      <div class="admin-metric">
-        <span>PAUSED</span>
-        <strong id="paused-students">0</strong>
-        <small>Access temporarily paused</small>
-      </div>
-
-    </div>
-
-
-    <!-- STUDENT MANAGEMENT -->
+  <section class="stage5-admin-section">
 
     <div class="admin-section-heading">
 
       <div>
-        <p class="admin-section-kicker">
-          STUDENT MANAGEMENT
-        </p>
-
-        <h2>Your students.</h2>
+        <p class="admin-section-kicker">PAYMENT CONFIGURATION</p>
+        <h2>Your payment details.</h2>
       </div>
 
-      <span class="admin-section-note">
-      Manage each journey individually.
-    </span>
-
     </div>
 
+    <div class="admin-card payment-settings-card">
 
-    <div class="admin-grid">
+      <p class="admin-settings-intro">
+        Enter the payment information your students should see
+        when renewing their monthly English course.
+      </p>
 
-
-      <!-- INVITE STUDENT -->
-
-      <section class="admin-card">
-
-        <div class="admin-card-heading">
-          <span class="admin-icon">✧</span>
-
-          <div>
-            <h3>Invite a student</h3>
-            <p>Create a personal learning account.</p>
-          </div>
-        </div>
+      <form id="payment-settings-form">
 
 
-        <form id="student-invite-form">
+        <!-- E-MOLA -->
 
-          <label for="student-name">
-            Student's full name
+        <div class="payment-method-admin">
+
+          <label class="payment-enabled-label">
+
+            <input
+                    type="checkbox"
+                    id="emola-enabled"
+                    checked
+            />
+
+            Enable e-Mola
+
+          </label>
+
+          <label for="emola-recipient">
+            Recipient name
           </label>
 
           <input
-                  id="student-name"
+                  id="emola-recipient"
                   type="text"
-                  placeholder="e.g. Maria Silva"
-                  maxlength="100"
-                  required
+                  maxlength="120"
+                  placeholder="Your name"
           />
 
-
-          <label for="student-email">
-            Student's Gmail address
+          <label for="emola-number">
+            e-Mola number
           </label>
 
           <input
-                  id="student-email"
-                  type="email"
-                  placeholder="student@gmail.com"
-                  autocomplete="off"
-                  maxlength="254"
-                  required
+                  id="emola-number"
+                  type="text"
+                  maxlength="50"
+                  placeholder="Your payment number"
           />
 
+          <label for="emola-instructions">
+            Additional instructions
+          </label>
 
-          <button
-                  type="submit"
-                  id="invite-student-button"
-                  class="primary-btn admin-invite-button"
-          >
-            <span>Create invitation</span>
-            <span aria-hidden="true">↗</span>
-          </button>
-
-
-          <p
-                  id="invite-message"
-                  class="admin-form-message"
-                  role="status"
-                  aria-live="polite"
-          ></p>
-
-        </form>
-
-        <div class="admin-invite-note">
-          Students must sign in using the exact Google
-          account you register here.
-        </div>
-
-      </section>
-
-
-      <!-- STUDENT LIST -->
-
-      <section class="admin-card admin-students-card">
-
-        <div class="admin-card-heading">
-
-          <span class="admin-icon">◈</span>
-
-          <div>
-            <h3>Student directory</h3>
-            <p>Your personalised English courses.</p>
-          </div>
+          <textarea
+                  id="emola-instructions"
+                  rows="2"
+                  maxlength="500"
+                  placeholder="Any payment instructions..."
+          ></textarea>
 
         </div>
 
 
-        <input
-                type="search"
-                id="student-search"
-                class="student-search"
-                placeholder="Search by name or email..."
-        />
+        <!-- M-PESA -->
+
+        <div class="payment-method-admin">
+
+          <label class="payment-enabled-label">
+
+            <input
+                    type="checkbox"
+                    id="mpesa-enabled"
+                    checked
+            />
+
+            Enable M-Pesa
+
+          </label>
+
+          <label for="mpesa-recipient">
+            Recipient name
+          </label>
+
+          <input
+                  id="mpesa-recipient"
+                  type="text"
+                  maxlength="120"
+                  placeholder="Your name"
+          />
+
+          <label for="mpesa-number">
+            M-Pesa number
+          </label>
+
+          <input
+                  id="mpesa-number"
+                  type="text"
+                  maxlength="50"
+                  placeholder="Your payment number"
+          />
+
+          <label for="mpesa-instructions">
+            Additional instructions
+          </label>
+
+          <textarea
+                  id="mpesa-instructions"
+                  rows="2"
+                  maxlength="500"
+                  placeholder="Any payment instructions..."
+          ></textarea>
+
+        </div>
 
 
-        <div
-                id="admin-students-list"
-                class="admin-students-list"
-                aria-live="polite"
+        <!-- BIM -->
+
+        <div class="payment-method-admin">
+
+          <label class="payment-enabled-label">
+
+            <input
+                    type="checkbox"
+                    id="bim-enabled"
+                    checked
+            />
+
+            Enable BIM
+
+          </label>
+
+          <label for="bim-bank">
+            Bank name
+          </label>
+
+          <input
+                  id="bim-bank"
+                  type="text"
+                  maxlength="120"
+                  value="Banco Internacional de Moçambique"
+          />
+
+          <label for="bim-account-name">
+            Account holder
+          </label>
+
+          <input
+                  id="bim-account-name"
+                  type="text"
+                  maxlength="120"
+                  placeholder="Account holder name"
+          />
+
+          <label for="bim-account-number">
+            Account number / NIB
+          </label>
+
+          <input
+                  id="bim-account-number"
+                  type="text"
+                  maxlength="100"
+                  placeholder="Your account number or NIB"
+          />
+
+          <label for="bim-instructions">
+            Additional instructions
+          </label>
+
+          <textarea
+                  id="bim-instructions"
+                  rows="2"
+                  maxlength="500"
+                  placeholder="Any payment instructions..."
+          ></textarea>
+
+        </div>
+
+
+        <button
+                type="submit"
+                id="save-payment-settings"
+                class="primary-btn admin-invite-button"
         >
-          <p class="admin-empty">
-            Loading student records...
-          </p>
-        </div>
+          Save payment details ↗
+        </button>
 
-      </section>
+        <p
+                id="payment-settings-message"
+                class="admin-form-message"
+                role="status"
+                aria-live="polite"
+        ></p>
+
+      </form>
 
     </div>
 
+  </section>
 
-    <!-- SELECTED STUDENT -->
 
-    <section
-            id="admin-student-detail"
-            class="admin-student-detail"
-            hidden
+  <!-- ==========================================
+       STUDENT FEEDBACK INBOX
+  ========================================== -->
+
+  <section class="stage5-admin-section">
+
+    <div class="admin-section-heading">
+
+      <div>
+        <p class="admin-section-kicker">STUDENT VOICES</p>
+        <h2>Monthly feedback.</h2>
+      </div>
+
+    </div>
+
+    <div
+            id="admin-feedback-list"
+            class="stage5-submission-list"
     >
 
-      <div class="admin-detail-heading">
+      <p class="admin-empty">
+        Loading feedback...
+      </p>
 
-        <div>
-          <p class="admin-section-kicker">
-            PERSONAL STUDENT SPACE
-          </p>
+    </div>
 
-          <h2 id="detail-student-name">
-            Student details
-          </h2>
+  </section>
 
-          <p id="detail-student-email"></p>
+
+  <!-- ==========================================
+       PAYMENT APPROVAL INBOX
+  ========================================== -->
+
+  <section class="stage5-admin-section">
+
+    <div class="admin-section-heading">
+
+      <div>
+        <p class="admin-section-kicker">MONTHLY RENEWALS</p>
+        <h2>Payment submissions.</h2>
+      </div>
+
+    </div>
+
+    <div
+            id="admin-renewal-list"
+            class="stage5-submission-list"
+    >
+
+      <p class="admin-empty">
+        Loading payment submissions...
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <footer class="admin-footer">
+
+    ENGLISH CONFIDENCE · PERSONAL LANGUAGE STUDIO
+
+    <span>MADE FOR GROWTH ✦</span>
+
+  </footer>
+
+</section>
+
+
+<!-- ==========================================
+     STUDENT TOP NAVIGATION
+========================================== -->
+
+<header class="topbar page-width" hidden>
+
+  <a href="#inicio" class="brand" aria-label="English Confidence — Início">
+
+    <span class="brand-mark">e<span>•</span>c</span>
+
+    <span class="brand-type">
+      ENGLISH
+      <strong>CONFIDENCE</strong>
+      <small>PERSONAL LANGUAGE STUDIO</small>
+    </span>
+
+  </a>
+
+  <nav aria-label="Navegação principal" class="topnav">
+
+    <a href="#jornada" data-i18n="navJourney">
+      A minha jornada
+    </a>
+
+    <a href="#metodo" data-i18n="navMethod">
+      O método
+    </a>
+
+  </nav>
+
+  <div class="lang-switch" role="group" aria-label="Language / Idioma">
+
+    <button
+            type="button"
+            id="lang-pt"
+            class="active"
+            aria-pressed="true"
+    >
+      PT
+    </button>
+
+    <button
+            type="button"
+            id="lang-en"
+            aria-pressed="false"
+    >
+      EN
+    </button>
+
+  </div>
+
+
+  <!-- STUDENT ACCOUNT -->
+
+  <div class="student-account-controls">
+
+    <span id="student-display-name"></span>
+
+    <button
+            type="button"
+            id="student-sign-out"
+            class="student-signout"
+    >
+      Sign out
+    </button>
+
+  </div>
+
+</header>
+
+
+<!-- ==========================================
+     PAUSED ACCOUNT NOTICE
+========================================== -->
+
+<div
+        id="student-access-notice"
+        class="student-access-notice page-width"
+        hidden
+>
+
+  <span class="student-notice-icon">✦</span>
+
+  <div>
+
+    <strong id="student-notice-title">
+      Learning access paused
+    </strong>
+
+    <p id="student-notice-message">
+      You can still revisit your completed lessons.
+      Please contact your teacher regarding renewal.
+    </p>
+
+  </div>
+
+</div>
+
+
+<!-- ==========================================
+     STUDENT MAIN PORTAL
+========================================== -->
+
+<main hidden>
+
+
+  <!-- ==========================================
+       HERO
+  ========================================== -->
+
+  <section class="hero page-width" id="inicio" aria-labelledby="hero-title">
+
+    <div class="hero-copy">
+
+      <div class="eyebrow">
+
+        <span class="sparkle">✦</span>
+
+        <span data-i18n="heroEyebrow">
+          O TEU ESPAÇO DE APRENDIZAGEM
+        </span>
+
+        <span class="eyebrow-dash"></span>
+
+        01 / 04
+
+      </div>
+
+      <h1 id="hero-title">
+
+        <span data-i18n="heroTitle1">
+          A tua voz.
+        </span>
+
+        <br/>
+
+        <em data-i18n="heroTitle2">
+          O teu ritmo.
+        </em>
+
+      </h1>
+
+      <p class="hero-description" data-i18n="heroBody">
+        Não precisas de falar perfeitamente para começares.
+        Cada conversa é mais um passo para te expressares com confiança.
+      </p>
+
+      <div class="hero-actions">
+
+        <a class="primary-btn" href="#jornada">
+
+          <span data-i18n="heroButton">
+            Ver a minha jornada
+          </span>
+
+          <span aria-hidden="true">↗</span>
+
+        </a>
+
+        <div class="soft-label">
+
+          <span class="pulse-dot"></span>
+
+          <span data-i18n="heroTag">
+            Feito à tua medida
+          </span>
+
         </div>
 
-        <span id="detail-student-status" class="admin-status">
+      </div>
+
+    </div>
+
+
+    <div class="hero-art" aria-hidden="true">
+
+      <div class="art-arc art-arc-one"></div>
+      <div class="art-arc art-arc-two"></div>
+      <div class="art-halo"></div>
+
+      <div class="art-sphere">
+
+        <div class="sphere-glint"></div>
+        <div class="sphere-ring"></div>
+
+      </div>
+
+      <div class="floating-label label-one">
+        <span>✧</span> GROW AT YOUR PACE
+      </div>
+
+      <div class="floating-label label-two">
+        one conversation<br/>
+        at a time <span>↗</span>
+      </div>
+
+      <div class="art-star">✦</div>
+
+      <div class="art-coordinate">
+        EC / 2026<br/>
+        SPEAK • LEARN • GROW
+      </div>
+
+    </div>
+
+
+    <div class="hero-bottom">
+
+      <span data-i18n="heroSub">
+        A tua evolução merece ser vista.
       </span>
 
+      <span>
+        SCROLL TO EXPLORE <span aria-hidden="true">↓</span>
+      </span>
+
+    </div>
+
+  </section>
+
+
+  <!-- ==========================================
+       PROGRESS DASHBOARD
+  ========================================== -->
+
+  <section class="dashboard page-width" id="progresso" aria-labelledby="dash-title">
+
+    <div class="section-heading">
+
+      <div>
+
+        <p class="kicker">
+
+          <span>01</span>
+
+          <span data-i18n="overviewKicker">
+            VISÃO GERAL
+          </span>
+
+        </p>
+
+        <h2 id="dash-title" data-i18n="overviewTitle">
+          Um mês de evolução.
+        </h2>
+
       </div>
 
+      <span class="section-note" data-i18n="overviewNote">
+        O teu percurso, sempre à vista.
+      </span>
 
-      <div class="admin-detail-grid">
-
-        <div class="admin-detail-item">
-          <span>ACCESS STATUS</span>
-          <strong id="detail-access-value">Active</strong>
-        </div>
-
-        <div class="admin-detail-item">
-          <span>CURRENT MONTH</span>
-          <strong id="detail-month-value">Month 1</strong>
-        </div>
-
-        <div class="admin-detail-item">
-          <span>ACCOUNT CREATED</span>
-          <strong id="detail-created-value">—</strong>
-        </div>
-
-      </div>
+    </div>
 
 
+    <div class="dashboard-grid">
 
-      <!-- ==========================================
-           PERSONAL LESSON MANAGEMENT
-      ========================================== -->
 
-      <section id="lesson-management" class="lesson-management">
+      <!-- PROGRESS CARD -->
 
-        <div class="lesson-management-heading">
+      <div class="progress-card">
 
-          <div>
-            <p class="admin-section-kicker">
-              INDIVIDUAL LEARNING JOURNEY
-            </p>
+        <div class="card-upper">
 
-            <h3>Personalise their lessons.</h3>
+          <span class="mini-tag" data-i18n="monthlyPlan">
+            PLANO MENSAL
+          </span>
 
-            <p>
-              Every student has a different journey.
-              Make every activity count.
-            </p>
-          </div>
+          <span class="progress-orbit" aria-hidden="true">
+            ✳
+          </span>
 
         </div>
 
 
         <!-- MONTH SELECTOR -->
 
-        <div class="lesson-toolbar">
+        <div class="student-month-picker">
 
-          <div>
-            <label for="admin-month-select">
-              SELECT MONTH
-            </label>
+          <label for="student-month-select" data-i18n="history">
+            LEARNING HISTORY
+          </label>
 
-            <select id="admin-month-select">
-              <option value="1">Month 1</option>
-              <option value="2">Month 2</option>
-              <option value="3">Month 3</option>
-              <option value="4">Month 4</option>
-              <option value="5">Month 5</option>
-              <option value="6">Month 6</option>
-              <option value="7">Month 7</option>
-              <option value="8">Month 8</option>
-              <option value="9">Month 9</option>
-              <option value="10">Month 10</option>
-              <option value="11">Month 11</option>
-              <option value="12">Month 12</option>
-            </select>
-          </div>
-
-          <div class="legacy-import-area">
-
-            <button
-                    type="button"
-                    id="import-legacy-lessons"
-                    class="student-action-button"
-            >
-              Import existing lessons
-            </button>
-
-            <p id="legacy-import-message">
-              Transfer content from your previous student files.
-            </p>
-
-          </div>
+          <select id="student-month-select"></select>
 
         </div>
 
-
-        <!-- LESSON EDITOR LAYOUT -->
-
-        <div class="lesson-editor-layout">
-
-
-          <!-- LESSON NAVIGATION -->
-
-          <aside class="lesson-editor-sidebar">
-
-            <div class="lesson-editor-sidebar-heading">
-
-              <span>MONTHLY PROGRAMME</span>
-
-              <strong>12 activities</strong>
-
-            </div>
+        <p
+                id="student-month-label"
+                class="student-month-label"
+        ></p>
 
 
-            <div
-                    id="admin-lesson-list"
-                    class="admin-lesson-list"
-            >
+        <!-- PROGRESS -->
 
-              <p class="admin-empty">
-                Select a student to load their lessons.
-              </p>
+        <div class="progress-big" id="progress-percent">
+          0<span>%</span>
+        </div>
 
-            </div>
+        <p data-i18n="progressCaption">
+          do percurso concluído
+        </p>
 
-          </aside>
+        <div class="progress-bar">
 
+          <div id="progress-fill"></div>
 
-          <!-- LESSON FORM -->
+        </div>
 
-          <section class="lesson-editor-main">
+        <div class="progress-meta">
 
-            <form id="admin-lesson-form">
-
-              <div class="lesson-form-heading">
-
-                <div>
-                  <p class="admin-section-kicker">
-                    EDITING LESSON
-                  </p>
-
-                  <h3 id="editor-lesson-heading">
-                    Lesson 01
-                  </h3>
-
-                  <p id="editor-lesson-type">
-                    Live conversation
-                  </p>
-                </div>
-
-                <span id="editor-lesson-status"
-                      class="admin-status status-paused">
-            Not published
+          <span id="progress-count">
+            0 / 12
           </span>
 
-              </div>
-
-
-              <!-- PORTUGUESE CONTENT -->
-
-              <div class="lesson-language-section">
-
-                <div class="lesson-language-heading">
-                  <span>PT</span>
-                  <strong>Português</strong>
-                </div>
-
-
-                <label for="lesson-pt-title">
-                  Título da aula
-                </label>
-
-                <input
-                        id="lesson-pt-title"
-                        type="text"
-                        maxlength="180"
-                        placeholder="Título em português"
-                />
-
-
-                <label for="lesson-pt-subtitle">
-                  Subtítulo
-                </label>
-
-                <input
-                        id="lesson-pt-subtitle"
-                        type="text"
-                        maxlength="220"
-                        placeholder="Subtítulo da aula"
-                />
-
-
-                <label for="lesson-pt-goal">
-                  Objectivo da aula
-                </label>
-
-                <textarea
-                        id="lesson-pt-goal"
-                        rows="4"
-                        placeholder="O que vão aprender nesta aula?"
-                ></textarea>
-
-
-                <label for="lesson-pt-vocabulary">
-                  Vocabulário
-                </label>
-
-                <textarea
-                        id="lesson-pt-vocabulary"
-                        rows="7"
-                        placeholder="Early | Cedo&#10;Usually | Normalmente&#10;Improve | Melhorar"
-                ></textarea>
-
-                <p class="lesson-field-hint">
-                  Escreve uma palavra ou expressão por linha,
-                  separada da tradução por uma barra vertical: |
-                </p>
-
-
-                <label for="lesson-pt-phrases">
-                  Expressões úteis
-                </label>
-
-                <textarea
-                        id="lesson-pt-phrases"
-                        rows="6"
-                        placeholder="I usually wake up early. — Costumo acordar cedo."
-                ></textarea>
-
-                <p class="lesson-field-hint">
-                  Uma expressão por linha.
-                </p>
-
-
-                <label for="lesson-pt-prompts">
-                  Perguntas para conversar
-                </label>
-
-                <textarea
-                        id="lesson-pt-prompts"
-                        rows="5"
-                        placeholder="Como descreverias a tua rotina?"
-                ></textarea>
-
-              </div>
-
-
-              <!-- ENGLISH CONTENT -->
-
-              <div class="lesson-language-section">
-
-                <div class="lesson-language-heading">
-                  <span>EN</span>
-                  <strong>English</strong>
-                </div>
-
-
-                <label for="lesson-en-title">
-                  Lesson title
-                </label>
-
-                <input
-                        id="lesson-en-title"
-                        type="text"
-                        maxlength="180"
-                        placeholder="Lesson title in English"
-                />
-
-
-                <label for="lesson-en-subtitle">
-                  Subtitle
-                </label>
-
-                <input
-                        id="lesson-en-subtitle"
-                        type="text"
-                        maxlength="220"
-                        placeholder="Lesson subtitle"
-                />
-
-
-                <label for="lesson-en-goal">
-                  Learning objective
-                </label>
-
-                <textarea
-                        id="lesson-en-goal"
-                        rows="4"
-                        placeholder="What will the student learn?"
-                ></textarea>
-
-
-                <label for="lesson-en-vocabulary">
-                  Vocabulary
-                </label>
-
-                <textarea
-                        id="lesson-en-vocabulary"
-                        rows="7"
-                        placeholder="Early | Before the usual time&#10;Usually | Most of the time"
-                ></textarea>
-
-                <p class="lesson-field-hint">
-                  One word or expression per line.
-                  Separate the expression and definition with |
-                </p>
-
-
-                <label for="lesson-en-phrases">
-                  Useful phrases
-                </label>
-
-                <textarea
-                        id="lesson-en-phrases"
-                        rows="6"
-                        placeholder="I usually wake up early."
-                ></textarea>
-
-
-                <label for="lesson-en-prompts">
-                  Discussion questions
-                </label>
-
-                <textarea
-                        id="lesson-en-prompts"
-                        rows="5"
-                        placeholder="How would you describe your daily routine?"
-                ></textarea>
-
-              </div>
-
-
-              <!-- PODCAST CONTENT -->
-
-              <div
-                      id="podcast-editor"
-                      class="lesson-language-section podcast-editor"
-                      hidden
-              >
-
-                <div class="lesson-language-heading">
-                  <span>♫</span>
-                  <strong>Self-paced learning activity</strong>
-                </div>
-
-
-                <label for="lesson-podcast-title">
-                  Podcast or video title
-                </label>
-
-                <input
-                        id="lesson-podcast-title"
-                        type="text"
-                        maxlength="200"
-                        placeholder="e.g. Listening & Comprehension"
-                />
-
-
-                <label for="lesson-podcast-url">
-                  Video or podcast link
-                </label>
-
-                <input
-                        id="lesson-podcast-url"
-                        type="url"
-                        maxlength="1000"
-                        placeholder="https://www.youtube.com/..."
-                />
-
-                <p class="lesson-field-hint">
-                  Only HTTPS or HTTP links are accepted.
-                </p>
-
-              </div>
-
-
-              <!-- PUBLISHING -->
-
-              <div class="lesson-publish-section">
-
-                <label class="lesson-publish-toggle">
-
-                  <input
-                          type="checkbox"
-                          id="lesson-published"
-                  />
-
-                  <span>
-              <strong>Publish this lesson</strong>
-
-              <small>
-                Make this lesson available to the student
-                when their previous activity is complete.
-              </small>
-            </span>
-
-                </label>
-
-              </div>
-
-
-              <div class="lesson-editor-actions">
-
-                <button
-                        type="submit"
-                        id="save-lesson-button"
-                        class="primary-btn"
-                >
-                  Save lesson changes ↗
-                </button>
-
-              </div>
-
-
-              <p
-                      id="lesson-save-message"
-                      class="admin-form-message"
-                      role="status"
-                      aria-live="polite"
-              ></p>
-
-
-            </form>
-
-
-            <!-- COMPLETION MANAGEMENT -->
-
-            <div class="teacher-completion-panel">
-
-              <p class="admin-section-kicker">
-                ACTIVITY COMPLETION
-              </p>
-
-              <div id="teacher-completion-content">
-
-                <p>
-                  Select a lesson to manage its completion.
-                </p>
-
-              </div>
-
-
-              <button
-                      type="button"
-                      id="teacher-complete-button"
-                      class="student-action-button"
-                      hidden
-              >
-                Mark as completed
-              </button>
-
-              <p
-                      id="teacher-completion-message"
-                      class="admin-form-message"
-                      role="status"
-                      aria-live="polite"
-              ></p>
-
-            </div>
-
-
-          </section>
+          <span data-i18n="activities">
+            atividades concluídas
+          </span>
 
         </div>
 
-      </section>
+      </div>
 
 
-    </section>
+      <!-- STAT CARDS -->
+
+      <div class="stat-card lilac-stat">
+
+        <span class="stat-icon">◴</span>
+
+        <div>
+          <strong>4</strong>
+          <p data-i18n="weeks">semanas</p>
+        </div>
+
+        <div class="stat-line"></div>
+
+        <small data-i18n="weeksDesc">
+          Uma etapa de cada vez
+        </small>
+
+      </div>
 
 
-    <footer class="admin-footer">
-      ENGLISH CONFIDENCE · PERSONAL LANGUAGE STUDIO
-      <span>MADE FOR GROWTH ✦</span>
-    </footer>
+      <div class="stat-card pale-stat">
+
+        <span class="stat-icon">◈</span>
+
+        <div>
+          <strong>8</strong>
+          <p data-i18n="liveSessions">conversas ao vivo</p>
+        </div>
+
+        <div class="stat-line"></div>
+
+        <small data-i18n="liveDesc">
+          30 minutos por sessão
+        </small>
+
+      </div>
+
+
+      <div class="stat-card mint-stat">
+
+        <span class="stat-icon">♫</span>
+
+        <div>
+          <strong>4</strong>
+          <p data-i18n="selfStudy">práticas individuais</p>
+        </div>
+
+        <div class="stat-line"></div>
+
+        <small data-i18n="selfDesc">
+          Ouvir, compreender, crescer
+        </small>
+
+      </div>
+
+    </div>
 
   </section>
 
 
+  <!-- ==========================================
+       STUDENT LEARNING JOURNEY
+  ========================================== -->
 
-  <header class="topbar page-width" hidden>
-    <a href="#inicio" class="brand" aria-label="English Confidence — Início">
-      <span class="brand-mark">e<span>•</span>c</span>
-      <span class="brand-type">ENGLISH <strong>CONFIDENCE</strong><small>PERSONAL LANGUAGE STUDIO</small></span>
-    </a>
-    <nav aria-label="Navegação principal" class="topnav">
-      <a href="#jornada" data-i18n="navJourney">A minha jornada</a>
-      <a href="#metodo" data-i18n="navMethod">O método</a>
-    </nav>
+  <section class="journey page-width" id="jornada" aria-labelledby="journey-title">
 
-    <div class="lang-switch" role="group" aria-label="Language / Idioma">
-      <button type="button" id="lang-pt" class="active" aria-pressed="true">PT</button>
-      <button type="button" id="lang-en" aria-pressed="false">EN</button>
+    <div class="section-heading journey-heading">
+
+      <div>
+
+        <p class="kicker">
+
+          <span>02</span>
+
+          <span data-i18n="journeyKicker">
+            O TEU PERCURSO
+          </span>
+
+        </p>
+
+        <h2 id="journey-title" data-i18n="journeyTitle">
+          Pequenos passos.<br/>Grandes mudanças.
+        </h2>
+
+      </div>
+
+
+      <div class="journey-aside">
+
+        <div class="legend-item">
+          <span class="legend-dot finished"></span>
+          <span data-i18n="done">Concluída</span>
+        </div>
+
+        <div class="legend-item">
+          <span class="legend-dot current"></span>
+          <span data-i18n="available">Disponível</span>
+        </div>
+
+        <div class="legend-item">
+          <span class="legend-dot locked"></span>
+          <span data-i18n="locked">Bloqueada</span>
+        </div>
+
+      </div>
+
     </div>
 
 
-    <div class="student-account-controls">
+    <div class="notice" role="note">
 
-  <span id="student-display-name">
-  </span>
+      <span class="notice-icon">✳</span>
 
-      <button
-              type="button"
-              id="student-sign-out"
-              class="student-signout"
-      >
-        Sign out
-      </button>
+      <span id="unlock-message" data-i18n="unlockMessage">
+        Cada nova atividade fica disponível quando terminares a anterior
+        e a tua professora a desbloquear.
+      </span>
 
     </div>
 
 
-  </header>
+    <!-- FIRESTORE LESSONS ARE RENDERED HERE -->
+
+    <div id="weeks-container" class="weeks-container"></div>
+
+  </section>
 
 
-  <div
-          id="student-access-notice"
-          class="student-access-notice page-width"
+  <!-- ==========================================
+       MONTH-END FEEDBACK AND RENEWAL
+  ========================================== -->
+
+  <section
+          id="month-end-section"
+          class="month-end-section page-width"
           hidden
   >
-    <span class="student-notice-icon">✦</span>
 
-    <div>
-      <strong id="student-notice-title">
-        Learning access paused
-      </strong>
+    <div class="section-heading">
 
-      <p id="student-notice-message">
-        You can still revisit your completed lessons.
-        Please contact your teacher regarding renewal.
-      </p>
+      <div>
+
+        <p class="kicker" id="month-end-kicker">
+
+          <span>03</span>
+
+          MONTH-END REFLECTION
+
+        </p>
+
+        <h2 id="month-end-heading">
+          You've made it.<br/>
+          <em>Let's celebrate.</em>
+        </h2>
+
+      </div>
+
+      <span class="month-end-star">✦</span>
+
     </div>
-  </div>
 
 
-  <main hidden>
-    <section class="hero page-width" id="inicio" aria-labelledby="hero-title">
-      <div class="hero-copy">
-        <div class="eyebrow"><span class="sparkle">✦</span><span data-i18n="heroEyebrow">O TEU ESPAÇO DE APRENDIZAGEM</span><span class="eyebrow-dash"></span>01 / 04</div>
-        <h1 id="hero-title"><span data-i18n="heroTitle1">A tua voz.</span><br/><em data-i18n="heroTitle2">O teu ritmo.</em></h1>
-        <p class="hero-description" data-i18n="heroBody">Não precisas de falar perfeitamente para começares. Cada conversa é mais um passo para te expressares com confiança.</p>
-        <div class="hero-actions">
-          <a class="primary-btn" href="#jornada"><span data-i18n="heroButton">Ver a minha jornada</span><span aria-hidden="true">↗</span></a>
-          <div class="soft-label"><span class="pulse-dot"></span><span data-i18n="heroTag">Feito à tua medida</span></div>
+    <div class="month-end-grid">
+
+
+      <!-- ======================================
+           STUDENT FEEDBACK
+      ======================================= -->
+
+      <section class="month-end-card feedback-card">
+
+        <div class="month-end-card-icon">✎</div>
+
+        <p
+                class="month-end-kicker"
+                id="feedback-kicker"
+        >
+          YOUR VOICE MATTERS
+        </p>
+
+        <h3 id="feedback-title">
+          Help me make your journey better.
+        </h3>
+
+        <p
+                class="month-end-description"
+                id="feedback-description"
+        >
+          Every student learns differently.
+          Your feedback helps me make our next month even better.
+        </p>
+
+
+        <form id="student-feedback-form">
+
+          <label
+                  for="feedback-liked"
+                  id="feedback-liked-label"
+          >
+            What did you like about this month's lessons?
+          </label>
+
+          <textarea
+                  id="feedback-liked"
+                  rows="4"
+                  maxlength="3000"
+                  placeholder="I really enjoyed..."
+                  required
+          ></textarea>
+
+
+          <label
+                  for="feedback-improve"
+                  id="feedback-improve-label"
+          >
+            What do you think could be improved?
+          </label>
+
+          <textarea
+                  id="feedback-improve"
+                  rows="4"
+                  maxlength="3000"
+                  placeholder="I think we could..."
+                  required
+          ></textarea>
+
+
+          <button
+                  type="submit"
+                  id="feedback-submit-button"
+                  class="primary-btn month-end-submit"
+          >
+            Send my feedback ↗
+          </button>
+
+        </form>
+
+
+        <div
+                id="feedback-submitted"
+                class="month-end-result"
+                hidden
+        >
+
+          <span>✦</span>
+
+          <strong>
+            Thank you for sharing!
+          </strong>
+
+          <p>
+            Your feedback has been sent to your teacher.
+          </p>
+
         </div>
-      </div>
-      <div class="hero-art" aria-hidden="true">
-        <div class="art-arc art-arc-one"></div><div class="art-arc art-arc-two"></div>
-        <div class="art-halo"></div>
-        <div class="art-sphere"><div class="sphere-glint"></div><div class="sphere-ring"></div></div>
-        <div class="floating-label label-one"><span>✧</span> GROW AT YOUR PACE</div>
-        <div class="floating-label label-two">one conversation<br/>at a time <span>↗</span></div>
-        <div class="art-star">✦</div>
-        <div class="art-coordinate">EC / 2026<br/>SPEAK • LEARN • GROW</div>
-      </div>
-      <div class="hero-bottom"><span data-i18n="heroSub">A tua evolução merece ser vista.</span><span>SCROLL TO EXPLORE <span aria-hidden="true">↓</span></span></div>
-    </section>
 
-    <section class="dashboard page-width" id="progresso" aria-labelledby="dash-title">
-      <div class="section-heading"><div><p class="kicker"><span>01</span> <span data-i18n="overviewKicker">VISÃO GERAL</span></p><h2 id="dash-title" data-i18n="overviewTitle">Um mês de evolução.</h2></div><span class="section-note" data-i18n="overviewNote">O teu percurso, sempre à vista.</span></div>
-      <div class="dashboard-grid">
-        <div class="progress-card">
-          <div class="card-upper"><span class="mini-tag" data-i18n="monthlyPlan">PLANO MENSAL</span><span class="progress-orbit" aria-hidden="true">✳</span></div>
 
-          <div class="student-month-picker">
+        <p
+                id="feedback-message"
+                class="month-end-message"
+                role="status"
+                aria-live="polite"
+        ></p>
 
-            <label for="student-month-select" data-i18n="history">
-              LEARNING HISTORY
-            </label>
+      </section>
 
-            <select id="student-month-select">
-            </select>
+
+      <!-- ======================================
+           MONTHLY RENEWAL
+      ======================================= -->
+
+      <section class="month-end-card renewal-card">
+
+        <div class="month-end-card-icon">↗</div>
+
+        <p
+                class="month-end-kicker"
+                id="renewal-kicker"
+        >
+          KEEP GROWING
+        </p>
+
+        <h3 id="renewal-title">
+          Your next chapter starts here.
+        </h3>
+
+        <p
+                class="month-end-description"
+                id="renewal-description"
+        >
+          Ready to continue improving your English?
+          Renew your monthly learning programme.
+        </p>
+
+
+        <button
+                type="button"
+                id="renewal-start-button"
+                class="primary-btn month-end-submit"
+        >
+          Continue next month ↗
+        </button>
+
+
+        <!-- PAYMENT FORM -->
+
+        <div
+                id="student-renewal-panel"
+                class="student-renewal-panel"
+                hidden
+        >
+
+          <div class="renewal-divider"></div>
+
+
+          <p
+                  class="renewal-step-title"
+                  id="renewal-step-one"
+          >
+            01 / CHOOSE YOUR PAYMENT METHOD
+          </p>
+
+
+          <label
+                  for="renewal-method"
+                  id="renewal-method-label"
+          >
+            Payment method
+          </label>
+
+          <select
+                  id="renewal-method"
+                  required
+          >
+
+            <option value="">
+              Select a payment method
+            </option>
+
+          </select>
+
+
+          <!-- PAYMENT DETAILS APPEAR HERE -->
+
+          <div
+                  id="renewal-payment-details"
+                  class="renewal-payment-details"
+          >
+            Select a method to see its payment details.
+          </div>
+
+
+          <label for="renewal-reference">
+            Payment reference (optional)
+          </label>
+
+          <input
+                  id="renewal-reference"
+                  type="text"
+                  maxlength="120"
+                  placeholder="Transaction ID or reference"
+          />
+
+
+          <div class="renewal-divider"></div>
+
+
+          <p
+                  class="renewal-step-title"
+                  id="renewal-step-two"
+          >
+            02 / UPLOAD PAYMENT CONFIRMATION
+          </p>
+
+
+          <label
+                  for="renewal-proof"
+                  id="renewal-proof-label"
+          >
+            Payment screenshot
+          </label>
+
+          <input
+                  id="renewal-proof"
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  required
+          />
+
+
+          <p
+                  class="renewal-file-hint"
+                  id="renewal-upload-hint"
+          >
+            Upload a clear screenshot showing the payment details.
+            Maximum compressed size: 400 KB.
+          </p>
+
+
+          <!-- SCREENSHOT PREVIEW -->
+
+          <div
+                  id="renewal-proof-preview-box"
+                  class="renewal-proof-preview-box"
+                  hidden
+          >
+
+            <img
+                    id="renewal-proof-preview"
+                    alt="Preview of your payment screenshot"
+            />
+
+            <span id="renewal-proof-size"></span>
 
           </div>
 
+
           <p
-                  id="student-month-label"
-                  class="student-month-label"
+                  id="renewal-proof-message"
+                  class="month-end-message"
+                  role="status"
+                  aria-live="polite"
           ></p>
 
-          <div class="progress-big" id="progress-percent">0<span>%</span></div>
-          <p data-i18n="progressCaption">do percurso concluído</p>
-          <div class="progress-bar"><div id="progress-fill"></div></div>
-          <div class="progress-meta"><span id="progress-count">0 / 12</span><span data-i18n="activities">atividades concluídas</span></div>
+
+          <button
+                  type="button"
+                  id="renewal-submit-button"
+                  class="primary-btn month-end-submit"
+                  disabled
+          >
+            Submit payment proof ↗
+          </button>
+
         </div>
-        <div class="stat-card lilac-stat"><span class="stat-icon">◴</span><div><strong>4</strong><p data-i18n="weeks">semanas</p></div><div class="stat-line"></div><small data-i18n="weeksDesc">Uma etapa de cada vez</small></div>
-        <div class="stat-card pale-stat"><span class="stat-icon">◈</span><div><strong>8</strong><p data-i18n="liveSessions">conversas ao vivo</p></div><div class="stat-line"></div><small data-i18n="liveDesc">30 minutos por sessão</small></div>
-        <div class="stat-card mint-stat"><span class="stat-icon">♫</span><div><strong>4</strong><p data-i18n="selfStudy">práticas individuais</p></div><div class="stat-line"></div><small data-i18n="selfDesc">Ouvir, compreender, crescer</small></div>
-      </div>
-    </section>
 
-    <section class="journey page-width" id="jornada" aria-labelledby="journey-title">
-      <div class="section-heading journey-heading">
-        <div><p class="kicker"><span>02</span> <span data-i18n="journeyKicker">O TEU PERCURSO</span></p>
-          <h2 id="journey-title" data-i18n="journeyTitle">Pequenos passos.<br/>Grandes mudanças.</h2></div>
-        <div class="journey-aside"><div class="legend-item"><span class="legend-dot finished"></span><span data-i18n="done">Concluída</span></div><div class="legend-item"><span class="legend-dot current"></span><span data-i18n="available">Disponível</span></div><div class="legend-item"><span class="legend-dot locked"></span><span data-i18n="locked">Bloqueada</span></div></div></div>
-      <div class="notice" role="note">
-        <span class="notice-icon">✳</span>
-        <span id="unlock-message" data-i18n="unlockMessage">Cada nova atividade fica disponível quando terminares a anterior e a tua professora a desbloquear.</span></div>
-      <div id="weeks-container" class="weeks-container"></div>
-    </section>
 
-    <section class="method-section" id="metodo" aria-labelledby="method-title">
-      <div class="page-width method-inner">
-        <div class="method-lead"><p class="kicker light"><span>03</span> <span data-i18n="methodKicker">A NOSSA FORMA DE APRENDER</span></p><h2 id="method-title" data-i18n="methodTitle">Menos medo.<br/><em>Mais voz.</em></h2><p data-i18n="methodIntro">Não é sobre memorizar regras sem fim. É sobre usar o inglês para contar histórias, partilhar ideias e viver novas experiências.</p></div>
-        <div class="method-points"><div class="method-point"><span>01 / <b>✳</b></span><h3 data-i18n="method1Title">Conversa real</h3><p data-i18n="method1Desc">Duas sessões individuais por semana, com espaço para errar e voltar a tentar.</p></div><div class="method-point"><span>02 / <b>◉</b></span><h3 data-i18n="method2Title">Escuta activa</h3><p data-i18n="method2Desc">Uma actividade semanal de escuta e compreensão, feita ao teu ritmo.</p></div><div class="method-point"><span>03 / <b>↗</b></span><h3 data-i18n="method3Title">Progresso visível</h3><p data-i18n="method3Desc">As sessões concluídas e a próxima etapa ficam sempre claras nesta página.</p></div></div>
+        <!-- RENEWAL STATUS -->
+
+        <div
+                id="renewal-status"
+                class="renewal-status"
+                hidden
+        ></div>
+
+
+        <p
+                id="renewal-message"
+                class="month-end-message"
+                role="status"
+                aria-live="polite"
+        ></p>
+
+      </section>
+
+    </div>
+
+  </section>
+
+
+  <!-- ==========================================
+       LEARNING METHOD
+  ========================================== -->
+
+  <section class="method-section" id="metodo" aria-labelledby="method-title">
+
+    <div class="page-width method-inner">
+
+
+      <div class="method-lead">
+
+        <p class="kicker light">
+
+          <span>04</span>
+
+          <span data-i18n="methodKicker">
+            A NOSSA FORMA DE APRENDER
+          </span>
+
+        </p>
+
+        <h2 id="method-title" data-i18n="methodTitle">
+          Menos medo.<br/>
+          <em>Mais voz.</em>
+        </h2>
+
+        <p data-i18n="methodIntro">
+          Não é sobre memorizar regras sem fim.
+          É sobre usar o inglês para contar histórias,
+          partilhar ideias e viver novas experiências.
+        </p>
+
       </div>
-    </section>
-  </main>
-  <footer class="footer page-width" hidden><div><span class="footer-brand">english confidence<span>✦</span></span><p data-i18n="footerLine">A tua voz tem lugar no mundo.</p></div><div class="footer-right"><span>PERSONAL LANGUAGE STUDIO</span><span>MADE FOR GROWTH © 2026</span></div></footer>
+
+
+      <div class="method-points">
+
+
+        <div class="method-point">
+
+          <span>
+            01 / <b>✳</b>
+          </span>
+
+          <h3 data-i18n="method1Title">
+            Conversa real
+          </h3>
+
+          <p data-i18n="method1Desc">
+            Duas sessões individuais por semana,
+            com espaço para errar e voltar a tentar.
+          </p>
+
+        </div>
+
+
+        <div class="method-point">
+
+          <span>
+            02 / <b>◉</b>
+          </span>
+
+          <h3 data-i18n="method2Title">
+            Escuta activa
+          </h3>
+
+          <p data-i18n="method2Desc">
+            Uma actividade semanal de escuta e compreensão,
+            feita ao teu ritmo.
+          </p>
+
+        </div>
+
+
+        <div class="method-point">
+
+          <span>
+            03 / <b>↗</b>
+          </span>
+
+          <h3 data-i18n="method3Title">
+            Progresso visível
+          </h3>
+
+          <p data-i18n="method3Desc">
+            As sessões concluídas e a próxima etapa
+            ficam sempre claras nesta página.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<!-- ==========================================
+     STUDENT FOOTER
+========================================== -->
+
+<footer class="footer page-width" hidden>
+
+  <div>
+
+    <span class="footer-brand">
+      english confidence<span>✦</span>
+    </span>
+
+    <p data-i18n="footerLine">
+      A tua voz tem lugar no mundo.
+    </p>
+
+  </div>
+
+
+  <div class="footer-right">
+
+    <span>PERSONAL LANGUAGE STUDIO</span>
+
+    <span>MADE FOR GROWTH © 2026</span>
+
+  </div>
+
+</footer>
+
 </body>
 </html>

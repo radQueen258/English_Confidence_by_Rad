@@ -2,6 +2,12 @@
 import { auth, db } from "./firebase.js";
 
 import {
+    setupMonthEndExperience,
+    refreshMonthEndExperience,
+    applyMonthEndLanguage
+} from "./stage5-student.js";
+
+import {
     signOut
 } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
 
@@ -478,6 +484,10 @@ function applyLanguage() {
             dictionary[language].pausedMessage;
 
     }
+
+    // Refresh the month-end interface in the selected language.
+    refreshMonthEndExperience().catch(console.error);
+    applyMonthEndLanguage(language);
 
 }
 
@@ -1144,6 +1154,10 @@ async function loadMonth(monthNumber) {
         // Render all 12 activities.
         render();
 
+// Display feedback and renewal only when all
+// twelve activities are completed.
+        await refreshMonthEndExperience();
+
 
     } catch (error) {
 
@@ -1549,6 +1563,27 @@ export async function initStudentPortal(
 
 
     currentProfile = profileSnapshot.data();
+
+    setupMonthEndExperience(() => ({
+
+        user: currentUser,
+
+        name: currentProfile.name
+            || invitation.name
+            || currentUser.displayName
+            || "Student",
+
+        month: currentMonth,
+
+        accessStatus,
+
+        language,
+
+        completedCount: Array.from(
+            lessonRecords.values()
+        ).filter(record => record.completed).length
+
+    }));
 
 
     const name =

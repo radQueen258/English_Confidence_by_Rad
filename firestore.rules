@@ -4,6 +4,10 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // ==========================================
+    // AUTHENTICATION
+    // ==========================================
+
     function isSignedIn() {
       return request.auth != null
         && request.auth.token.email_verified == true;
@@ -45,20 +49,27 @@ service cloud.firestore {
 
 
     // ==========================================
-    // PREVIOUS ACTIVITY COMPLETION
+    // COMPLETION HELPERS
     // ==========================================
 
-    function hasCompletion(email, monthId, previousLessonId) {
+    function hasCompletion(email, monthId, lessonId) {
       return exists(
-        /databases/$(database)/documents/students/$(email)/months/$(monthId)/lessons/$(previousLessonId)/completions/status
+        /databases/$(database)/documents/students/$(email)/months/$(monthId)/lessons/$(lessonId)/completions/status
       );
     }
 
-
     function ownLessonCompleted(email, monthId, lessonId) {
-        return exists(
-           /databases/$(database)/documents/students/$(email)/months/$(monthId)/lessons/$(lessonId)/completions/status
-        );
+      return exists(
+        /databases/$(database)/documents/students/$(email)/months/$(monthId)/lessons/$(lessonId)/completions/status
+      );
+    }
+
+    function finalLessonCompleted(email, monthId) {
+      let path =
+        /databases/$(database)/documents/students/$(email)/months/$(monthId)/lessons/lesson-12/completions/status;
+
+      return exists(path)
+        && get(path).data.completed == true;
     }
 
 
@@ -152,7 +163,7 @@ service cloud.firestore {
 
 
       // ========================================
-      // MONTHS
+      // MONTHLY RECORDS
       // ========================================
 
       match /months/{monthId} {
@@ -169,48 +180,29 @@ service cloud.firestore {
 
         match /lessons/{lessonId} {
 
-          // Students can retrieve individual lessons
-          // only after the previous activity is done.
+          allow get: if isAdmin()
 
+            || (
+              canAccessLessons(email)
+              && resource.data.published == true
+              && previousActivityCompleted(
+                email,
+                monthId,
+                lessonId
+              )
+            )
 
-allow get: if isAdmin()
+            || (
+              canReadOwnProfile(email)
+              && ownLessonCompleted(
+                email,
+                monthId,
+                lessonId
+              )
+            );
 
-  // Active students can access published lessons
-  // once the previous activity has been completed.
-  || (
-
-    canAccessLessons(email)
-
-    && resource.data.published == true
-
-    && previousActivityCompleted(
-      email,
-      monthId,
-      lessonId
-    )
-
-  )
-
-  // Active or paused students can revisit
-  // lessons they have already completed.
-  || (
-
-    canReadOwnProfile(email)
-
-    && ownLessonCompleted(
-      email,
-      monthId,
-      lessonId
-    )
-
-  );
-
-
-          // Students use individual getDoc requests,
-          // not collection queries, for lesson access.
           allow list: if isAdmin();
 
-          // Teachers control all lesson content.
           allow create, update, delete: if isAdmin();
 
 
@@ -224,9 +216,6 @@ allow get: if isAdmin()
               || canReadOwnProfile(email);
 
 
-            // Admin can manage every completion.
-            // Students can ONLY create their own
-            // self-paced podcast completion.
             allow create: if isAdmin()
 
               || (
@@ -270,10 +259,220 @@ allow get: if isAdmin()
 
               );
 
-
-            // Only the teacher can change or remove
-            // completion records.
             allow update, delete: if isAdmin();
+
+          }
+
+
+          // ====================================
+          // MONTHLY FEEDBACK
+          // ====================================
+
+          match /feedback/{feedbackId} {
+
+            allow get: if isAdmin()
+              || canReadOwnProfile(email);
+
+            allow list: if isAdmin();
+
+            allow create: if isOwnEmail(email)
+
+              && canReadOwnProfile(email)
+
+              && feedbackId == 'current'
+
+              && finalLessonCompleted(email, monthId)
+
+              && request.resource.data.keys().hasAll([
+                'email',
+                'studentName',
+                'monthNumber',
+                'monthKey',
+                'liked',
+                'improve',
+                'submittedAt'
+              ])
+
+              && request.resource.data.keys().hasOnly([
+                'email',
+                'studentName',
+                'monthNumber',
+                'monthKey',
+                'liked',
+                'improve',
+                'submittedAt'
+              ])
+
+              && request.resource.data.email == email
+
+              && request.resource.data.monthKey == monthId
+
+              && request.resource.data.monthNumber is int
+
+              && request.resource.data.liked is string
+
+              && request.resource.data.improve is string
+
+              && request.resource.data.liked.size() > 0
+
+              && request.resource.data.improve.size() > 0
+
+              && request.resource.data.liked.size() <= 3000
+
+              && request.resource.data.improve.size() <= 3000
+
+              && request.resource.data.submittedAt == request.time;
+
+            allow update, delete: if isAdmin();
+
+          }
+
+
+          // ====================================
+          // MONTHLY PAYMENT / RENEWAL
+          // ====================================
+
+          match /renewals/{renewalId} {
+
+            allow get: if isAdmin()
+              || canReadOwnProfile(email);
+
+            allow list: if isAdmin();
+
+
+            // Validate screenshot and payment data.
+            function validRenewalFields(data) {
+
+              return data.email == email
+
+                && data.studentName is string
+
+                && data.monthNumber is int
+
+                && data.monthKey == monthId
+
+                && data.nextMonthNumber == data.monthNumber + 1
+
+                && data.paymentMethod in [
+                  'emola',
+                  'mpesa',
+                  'bim'
+                ]
+
+                && data.paymentReference is string
+
+                && data.paymentReference.size() <= 120
+
+                && data.screenshotMimeType in [
+                  'image/webp',
+                  'image/jpeg',
+                  'image/png'
+                ]
+
+                && data.screenshotBytes is int
+
+                && data.screenshotBytes > 0
+
+                && data.screenshotBytes <= 409600
+
+                && data.screenshotDataUrl is string
+
+                && data.screenshotDataUrl.size() < 600000
+
+                && data.screenshotDataUrl.matches(
+                  '^data:image/(webp|jpeg|png);base64,[A-Za-z0-9+/=]+$'
+                );
+
+            }
+
+
+            allow create: if isOwnEmail(email)
+
+              && canReadOwnProfile(email)
+
+              && renewalId == 'current'
+
+              && finalLessonCompleted(email, monthId)
+
+              && request.resource.data.keys().hasAll([
+                'email',
+                'studentName',
+                'monthNumber',
+                'monthKey',
+                'nextMonthNumber',
+                'paymentMethod',
+                'paymentReference',
+                'screenshotDataUrl',
+                'screenshotMimeType',
+                'screenshotBytes',
+                'status',
+                'submittedAt'
+              ])
+
+              && request.resource.data.keys().hasOnly([
+                'email',
+                'studentName',
+                'monthNumber',
+                'monthKey',
+                'nextMonthNumber',
+                'paymentMethod',
+                'paymentReference',
+                'screenshotDataUrl',
+                'screenshotMimeType',
+                'screenshotBytes',
+                'status',
+                'submittedAt'
+              ])
+
+              && validRenewalFields(request.resource.data)
+
+              && request.resource.data.status == 'pending'
+
+              && request.resource.data.submittedAt == request.time;
+
+
+            // The student can resubmit only when
+            // the previous request was rejected.
+            allow update: if isAdmin()
+
+              || (
+
+                isOwnEmail(email)
+
+                && canReadOwnProfile(email)
+
+                && renewalId == 'current'
+
+                && resource.data.status == 'rejected'
+
+                && request.resource.data.status == 'pending'
+
+                && request.resource.data.email == resource.data.email
+
+                && request.resource.data.monthKey == resource.data.monthKey
+
+                && request.resource.data.monthNumber == resource.data.monthNumber
+
+                && request.resource.data.nextMonthNumber == resource.data.nextMonthNumber
+
+                && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+                  'studentName',
+                  'paymentMethod',
+                  'paymentReference',
+                  'screenshotDataUrl',
+                  'screenshotMimeType',
+                  'screenshotBytes',
+                  'status',
+                  'submittedAt'
+                ])
+
+                && validRenewalFields(request.resource.data)
+
+                && request.resource.data.submittedAt == request.time
+
+              );
+
+            allow delete: if isAdmin();
 
           }
 
@@ -285,11 +484,56 @@ allow get: if isAdmin()
 
 
     // ==========================================
-    // EVERYTHING ELSE DENIED
+    // PAYMENT METHOD SETTINGS
+    // ==========================================
+
+    match /settings/{settingId} {
+
+      allow get: if isAdmin()
+
+        || (
+          settingId == 'paymentMethods'
+
+          && isSignedIn()
+
+          && invitationExists(request.auth.token.email)
+
+          && invitationStatus(request.auth.token.email) != 'revoked'
+        );
+
+      allow list: if isAdmin();
+
+      allow create, update, delete: if isAdmin();
+
+    }
+
+
+    // ==========================================
+    // COLLECTION GROUP ACCESS
+    // ADMIN ONLY
+    // ==========================================
+
+    match /{path=**}/feedback/{feedbackId} {
+
+      allow list: if isAdmin();
+
+    }
+
+    match /{path=**}/renewals/{renewalId} {
+
+      allow list: if isAdmin();
+
+    }
+
+
+    // ==========================================
+    // DEFAULT DENY
     // ==========================================
 
     match /{document=**} {
+
       allow read, write: if false;
+
     }
 
   }
