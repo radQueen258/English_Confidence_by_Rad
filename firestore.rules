@@ -45,13 +45,82 @@ service cloud.firestore {
 
 
     // ==========================================
+    // PREVIOUS ACTIVITY COMPLETION
+    // ==========================================
+
+    function hasCompletion(email, monthId, previousLessonId) {
+      return exists(
+        /databases/$(database)/documents/students/$(email)/months/$(monthId)/lessons/$(previousLessonId)/completions/status
+      );
+    }
+
+    function previousActivityCompleted(email, monthId, lessonId) {
+
+      return lessonId == 'lesson-1'
+
+        || (
+          lessonId == 'lesson-2'
+          && hasCompletion(email, monthId, 'lesson-1')
+        )
+
+        || (
+          lessonId == 'lesson-3'
+          && hasCompletion(email, monthId, 'lesson-2')
+        )
+
+        || (
+          lessonId == 'lesson-4'
+          && hasCompletion(email, monthId, 'lesson-3')
+        )
+
+        || (
+          lessonId == 'lesson-5'
+          && hasCompletion(email, monthId, 'lesson-4')
+        )
+
+        || (
+          lessonId == 'lesson-6'
+          && hasCompletion(email, monthId, 'lesson-5')
+        )
+
+        || (
+          lessonId == 'lesson-7'
+          && hasCompletion(email, monthId, 'lesson-6')
+        )
+
+        || (
+          lessonId == 'lesson-8'
+          && hasCompletion(email, monthId, 'lesson-7')
+        )
+
+        || (
+          lessonId == 'lesson-9'
+          && hasCompletion(email, monthId, 'lesson-8')
+        )
+
+        || (
+          lessonId == 'lesson-10'
+          && hasCompletion(email, monthId, 'lesson-9')
+        )
+
+        || (
+          lessonId == 'lesson-11'
+          && hasCompletion(email, monthId, 'lesson-10')
+        )
+
+        || (
+          lessonId == 'lesson-12'
+          && hasCompletion(email, monthId, 'lesson-11')
+        );
+    }
+
+
+    // ==========================================
     // INVITATIONS
     // ==========================================
 
     match /invitations/{email} {
 
-      // Students can check their own invitation,
-      // including when access has been revoked.
       allow get: if isAdmin() || isOwnEmail(email);
 
       allow list: if isAdmin();
@@ -80,8 +149,6 @@ service cloud.firestore {
 
       match /months/{monthId} {
 
-        // Students retain access to their
-        // own month records while paused.
         allow get, list: if isAdmin()
           || canReadOwnProfile(email);
 
@@ -94,14 +161,24 @@ service cloud.firestore {
 
         match /lessons/{lessonId} {
 
-          // Only published lessons are visible
-          // to students with active access.
-          allow get, list: if isAdmin()
+          // Students can retrieve individual lessons
+          // only after the previous activity is done.
+          allow get: if isAdmin()
             || (
               canAccessLessons(email)
               && resource.data.published == true
+              && previousActivityCompleted(
+                email,
+                monthId,
+                lessonId
+              )
             );
 
+          // Students use individual getDoc requests,
+          // not collection queries, for lesson access.
+          allow list: if isAdmin();
+
+          // Teachers control all lesson content.
           allow create, update, delete: if isAdmin();
 
 
@@ -114,16 +191,31 @@ service cloud.firestore {
             allow get, list: if isAdmin()
               || canReadOwnProfile(email);
 
-            // The teacher can mark live lessons.
-            // A student can only complete a podcast
-            // activity belonging to their account.
-            allow create, update: if isAdmin()
+
+            // Admin can manage every completion.
+            // Students can ONLY create their own
+            // self-paced podcast completion.
+            allow create: if isAdmin()
+
               || (
+
                 canAccessLessons(email)
+
+                && completionId == 'status'
 
                 && get(
                   /databases/$(database)/documents/students/$(email)/months/$(monthId)/lessons/$(lessonId)
                 ).data.type == 'podcast'
+
+                && get(
+                  /databases/$(database)/documents/students/$(email)/months/$(monthId)/lessons/$(lessonId)
+                ).data.published == true
+
+                && previousActivityCompleted(
+                  email,
+                  monthId,
+                  lessonId
+                )
 
                 && request.resource.data.keys().hasOnly([
                   'completed',
@@ -143,22 +235,30 @@ service cloud.firestore {
                   == request.auth.token.email
 
                 && request.resource.data.completedAt == request.time
+
               );
 
-            allow delete: if isAdmin();
+
+            // Only the teacher can change or remove
+            // completion records.
+            allow update, delete: if isAdmin();
+
           }
+
         }
+
       }
+
     }
 
 
     // ==========================================
-    // ALL OTHER COLLECTIONS
-    // REMAIN PRIVATE UNTIL WE CONFIGURE THEM
+    // EVERYTHING ELSE DENIED
     // ==========================================
 
     match /{document=**} {
       allow read, write: if false;
     }
+
   }
 }

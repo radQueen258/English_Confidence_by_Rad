@@ -387,20 +387,446 @@
       </div>
 
 
-      <div class="admin-coming-soon">
-        <span>✦</span>
 
-        <div>
-          <strong>Monthly learning management</strong>
+      <!-- ==========================================
+           PERSONAL LESSON MANAGEMENT
+      ========================================== -->
 
-          <p>
-            Lesson topics, personalised materials,
-            video and podcast links, and teacher-controlled
-            completion will be available in the next stage.
-          </p>
+      <section id="lesson-management" class="lesson-management">
+
+        <div class="lesson-management-heading">
+
+          <div>
+            <p class="admin-section-kicker">
+              INDIVIDUAL LEARNING JOURNEY
+            </p>
+
+            <h3>Personalise their lessons.</h3>
+
+            <p>
+              Every student has a different journey.
+              Make every activity count.
+            </p>
+          </div>
+
         </div>
 
-      </div>
+
+        <!-- MONTH SELECTOR -->
+
+        <div class="lesson-toolbar">
+
+          <div>
+            <label for="admin-month-select">
+              SELECT MONTH
+            </label>
+
+            <select id="admin-month-select">
+              <option value="1">Month 1</option>
+              <option value="2">Month 2</option>
+              <option value="3">Month 3</option>
+              <option value="4">Month 4</option>
+              <option value="5">Month 5</option>
+              <option value="6">Month 6</option>
+              <option value="7">Month 7</option>
+              <option value="8">Month 8</option>
+              <option value="9">Month 9</option>
+              <option value="10">Month 10</option>
+              <option value="11">Month 11</option>
+              <option value="12">Month 12</option>
+            </select>
+          </div>
+
+          <div class="legacy-import-area">
+
+            <button
+                    type="button"
+                    id="import-legacy-lessons"
+                    class="student-action-button"
+            >
+              Import existing lessons
+            </button>
+
+            <p id="legacy-import-message">
+              Transfer content from your previous student files.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- LESSON EDITOR LAYOUT -->
+
+        <div class="lesson-editor-layout">
+
+
+          <!-- LESSON NAVIGATION -->
+
+          <aside class="lesson-editor-sidebar">
+
+            <div class="lesson-editor-sidebar-heading">
+
+              <span>MONTHLY PROGRAMME</span>
+
+              <strong>12 activities</strong>
+
+            </div>
+
+
+            <div
+                    id="admin-lesson-list"
+                    class="admin-lesson-list"
+            >
+
+              <p class="admin-empty">
+                Select a student to load their lessons.
+              </p>
+
+            </div>
+
+          </aside>
+
+
+          <!-- LESSON FORM -->
+
+          <section class="lesson-editor-main">
+
+            <form id="admin-lesson-form">
+
+              <div class="lesson-form-heading">
+
+                <div>
+                  <p class="admin-section-kicker">
+                    EDITING LESSON
+                  </p>
+
+                  <h3 id="editor-lesson-heading">
+                    Lesson 01
+                  </h3>
+
+                  <p id="editor-lesson-type">
+                    Live conversation
+                  </p>
+                </div>
+
+                <span id="editor-lesson-status"
+                      class="admin-status status-paused">
+            Not published
+          </span>
+
+              </div>
+
+
+              <!-- PORTUGUESE CONTENT -->
+
+              <div class="lesson-language-section">
+
+                <div class="lesson-language-heading">
+                  <span>PT</span>
+                  <strong>Português</strong>
+                </div>
+
+
+                <label for="lesson-pt-title">
+                  Título da aula
+                </label>
+
+                <input
+                        id="lesson-pt-title"
+                        type="text"
+                        maxlength="180"
+                        placeholder="Título em português"
+                />
+
+
+                <label for="lesson-pt-subtitle">
+                  Subtítulo
+                </label>
+
+                <input
+                        id="lesson-pt-subtitle"
+                        type="text"
+                        maxlength="220"
+                        placeholder="Subtítulo da aula"
+                />
+
+
+                <label for="lesson-pt-goal">
+                  Objectivo da aula
+                </label>
+
+                <textarea
+                        id="lesson-pt-goal"
+                        rows="4"
+                        placeholder="O que vão aprender nesta aula?"
+                ></textarea>
+
+
+                <label for="lesson-pt-vocabulary">
+                  Vocabulário
+                </label>
+
+                <textarea
+                        id="lesson-pt-vocabulary"
+                        rows="7"
+                        placeholder="Early | Cedo&#10;Usually | Normalmente&#10;Improve | Melhorar"
+                ></textarea>
+
+                <p class="lesson-field-hint">
+                  Escreve uma palavra ou expressão por linha,
+                  separada da tradução por uma barra vertical: |
+                </p>
+
+
+                <label for="lesson-pt-phrases">
+                  Expressões úteis
+                </label>
+
+                <textarea
+                        id="lesson-pt-phrases"
+                        rows="6"
+                        placeholder="I usually wake up early. — Costumo acordar cedo."
+                ></textarea>
+
+                <p class="lesson-field-hint">
+                  Uma expressão por linha.
+                </p>
+
+
+                <label for="lesson-pt-prompts">
+                  Perguntas para conversar
+                </label>
+
+                <textarea
+                        id="lesson-pt-prompts"
+                        rows="5"
+                        placeholder="Como descreverias a tua rotina?"
+                ></textarea>
+
+              </div>
+
+
+              <!-- ENGLISH CONTENT -->
+
+              <div class="lesson-language-section">
+
+                <div class="lesson-language-heading">
+                  <span>EN</span>
+                  <strong>English</strong>
+                </div>
+
+
+                <label for="lesson-en-title">
+                  Lesson title
+                </label>
+
+                <input
+                        id="lesson-en-title"
+                        type="text"
+                        maxlength="180"
+                        placeholder="Lesson title in English"
+                />
+
+
+                <label for="lesson-en-subtitle">
+                  Subtitle
+                </label>
+
+                <input
+                        id="lesson-en-subtitle"
+                        type="text"
+                        maxlength="220"
+                        placeholder="Lesson subtitle"
+                />
+
+
+                <label for="lesson-en-goal">
+                  Learning objective
+                </label>
+
+                <textarea
+                        id="lesson-en-goal"
+                        rows="4"
+                        placeholder="What will the student learn?"
+                ></textarea>
+
+
+                <label for="lesson-en-vocabulary">
+                  Vocabulary
+                </label>
+
+                <textarea
+                        id="lesson-en-vocabulary"
+                        rows="7"
+                        placeholder="Early | Before the usual time&#10;Usually | Most of the time"
+                ></textarea>
+
+                <p class="lesson-field-hint">
+                  One word or expression per line.
+                  Separate the expression and definition with |
+                </p>
+
+
+                <label for="lesson-en-phrases">
+                  Useful phrases
+                </label>
+
+                <textarea
+                        id="lesson-en-phrases"
+                        rows="6"
+                        placeholder="I usually wake up early."
+                ></textarea>
+
+
+                <label for="lesson-en-prompts">
+                  Discussion questions
+                </label>
+
+                <textarea
+                        id="lesson-en-prompts"
+                        rows="5"
+                        placeholder="How would you describe your daily routine?"
+                ></textarea>
+
+              </div>
+
+
+              <!-- PODCAST CONTENT -->
+
+              <div
+                      id="podcast-editor"
+                      class="lesson-language-section podcast-editor"
+                      hidden
+              >
+
+                <div class="lesson-language-heading">
+                  <span>♫</span>
+                  <strong>Self-paced learning activity</strong>
+                </div>
+
+
+                <label for="lesson-podcast-title">
+                  Podcast or video title
+                </label>
+
+                <input
+                        id="lesson-podcast-title"
+                        type="text"
+                        maxlength="200"
+                        placeholder="e.g. Listening & Comprehension"
+                />
+
+
+                <label for="lesson-podcast-url">
+                  Video or podcast link
+                </label>
+
+                <input
+                        id="lesson-podcast-url"
+                        type="url"
+                        maxlength="1000"
+                        placeholder="https://www.youtube.com/..."
+                />
+
+                <p class="lesson-field-hint">
+                  Only HTTPS or HTTP links are accepted.
+                </p>
+
+              </div>
+
+
+              <!-- PUBLISHING -->
+
+              <div class="lesson-publish-section">
+
+                <label class="lesson-publish-toggle">
+
+                  <input
+                          type="checkbox"
+                          id="lesson-published"
+                  />
+
+                  <span>
+              <strong>Publish this lesson</strong>
+
+              <small>
+                Make this lesson available to the student
+                when their previous activity is complete.
+              </small>
+            </span>
+
+                </label>
+
+              </div>
+
+
+              <div class="lesson-editor-actions">
+
+                <button
+                        type="submit"
+                        id="save-lesson-button"
+                        class="primary-btn"
+                >
+                  Save lesson changes ↗
+                </button>
+
+              </div>
+
+
+              <p
+                      id="lesson-save-message"
+                      class="admin-form-message"
+                      role="status"
+                      aria-live="polite"
+              ></p>
+
+
+            </form>
+
+
+            <!-- COMPLETION MANAGEMENT -->
+
+            <div class="teacher-completion-panel">
+
+              <p class="admin-section-kicker">
+                ACTIVITY COMPLETION
+              </p>
+
+              <div id="teacher-completion-content">
+
+                <p>
+                  Select a lesson to manage its completion.
+                </p>
+
+              </div>
+
+
+              <button
+                      type="button"
+                      id="teacher-complete-button"
+                      class="student-action-button"
+                      hidden
+              >
+                Mark as completed
+              </button>
+
+              <p
+                      id="teacher-completion-message"
+                      class="admin-form-message"
+                      role="status"
+                      aria-live="polite"
+              ></p>
+
+            </div>
+
+
+          </section>
+
+        </div>
+
+      </section>
+
 
     </section>
 

@@ -1,6 +1,14 @@
 
 import { auth, db, ADMIN_EMAIL } from "./firebase.js";
 
+
+import {
+    setupLessonEditor,
+    loadStudentLessonEditor,
+    resetStudentLessonEditor
+} from "./lesson-editor.js";
+
+
 import {
     signOut
 } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
@@ -558,6 +566,7 @@ async function createStudent(event) {
 
 
         selectedStudentEmail = email;
+        await loadStudentLessonEditor(email, 1);
 
     } catch (error) {
 
@@ -687,6 +696,8 @@ async function handleAdminAction(event) {
         selectedStudentEmail = email;
 
         renderStudents();
+
+        await loadStudentLessonEditor(email, 1);
 
         detailPanel.scrollIntoView({
             behavior: "smooth",
@@ -858,6 +869,8 @@ export async function initAdminDashboard() {
             }
         );
 
+        setupLessonEditor();
+
 
         listenersAttached = true;
 
@@ -890,6 +903,7 @@ export function disposeAdminDashboard() {
 
     }
 
+    resetStudentLessonEditor();
 
     students = [];
 
