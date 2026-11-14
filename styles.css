@@ -2116,3 +2116,182 @@
 
 }
 
+
+
+/* ==========================================
+   STUDENT WEEK ACCORDION
+   ENGLISH CONFIDENCE
+========================================== */
+
+/* Reduce the space between collapsed weeks. */
+.weeks-container {
+    gap: 18px;
+}
+
+/* Keep the existing timeline decoration compact. */
+.week-block:not(:last-child)::after {
+    height: 18px;
+    bottom: -18px;
+}
+
+/* Clickable week header. */
+.week-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    width: 100%;
+    padding: 0 0 8px;
+
+    border: 0;
+    border-radius: 15px;
+
+    background: transparent;
+    color: inherit;
+
+    font: inherit;
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: background .2s;
+}
+
+.week-toggle:hover .week-counter {
+    background: #d3c7f0;
+}
+
+.week-toggle:focus-visible {
+    outline: 3px solid #ec92c7;
+    outline-offset: 5px;
+}
+
+/* Week number and heading. */
+.week-toggle .week-left {
+    flex: 1;
+    min-width: 0;
+}
+
+.week-copy {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.week-subtitle {
+    display: block;
+    margin-top: 8px;
+
+    color: #8c859d;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* Status and expand/collapse arrow. */
+.week-toggle .week-status {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.week-chevron {
+    display: grid;
+    place-items: center;
+
+    width: 30px;
+    height: 30px;
+
+    border-radius: 50%;
+
+    background: #eee9fa;
+    color: #7765ce;
+
+    font-size: 21px;
+    line-height: 1;
+
+    transition:
+            transform .25s ease,
+            background .2s ease;
+}
+
+/* Rotate the arrow when the week is expanded. */
+.week-toggle[aria-expanded="true"] .week-chevron {
+    transform: rotate(180deg);
+    background: #ddd4f4;
+}
+
+.week-toggle[aria-expanded="true"] .week-counter {
+    background: #d3c7f0;
+}
+
+/* Smoothly reveal the lesson area. */
+.lesson-stack {
+    display: grid;
+    gap: 12px;
+    animation: weekAccordionOpen .22s ease;
+}
+
+.lesson-stack[hidden] {
+    display: none !important;
+}
+
+@keyframes weekAccordionOpen {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ==========================================
+   ACCORDION — MOBILE
+========================================== */
+
+@media(max-width:580px) {
+
+    .weeks-container {
+        gap: 16px;
+    }
+
+    .week-block:not(:last-child)::after {
+        height: 16px;
+        bottom: -16px;
+        left: 25px;
+    }
+
+    .week-toggle {
+        gap: 8px;
+        padding-bottom: 6px;
+    }
+
+    .week-toggle .week-left {
+        gap: 11px;
+    }
+
+    .week-subtitle {
+        font-size: 10px;
+        margin-top: 6px;
+    }
+
+    .week-toggle .week-status {
+        gap: 6px;
+        font-size: 9px;
+    }
+
+    .week-chevron {
+        width: 25px;
+        height: 25px;
+        font-size: 18px;
+    }
+
+}
+
+

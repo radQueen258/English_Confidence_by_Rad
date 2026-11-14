@@ -248,6 +248,10 @@ let completionWatchers = [];
 
 let invitationUnsubscribe = null;
 
+// The currently expanded week.
+// null means that all weeks are collapsed.
+let openWeekNumber = null;
+
 
 // ==========================================
 // FIRESTORE REFERENCES
@@ -474,7 +478,7 @@ function applyLanguage() {
     element("student-month-label").textContent =
         `${dictionary[language].month} ${currentMonth}`;
 
-// Keep the paused-account notice bilingual.
+    // Keep the paused-account notice bilingual.
     if (accessStatus === "paused") {
 
         element("student-notice-title").textContent =
@@ -795,7 +799,7 @@ function renderLessonCard(record, text) {
 
 
 // ==========================================
-// WEEK RENDERING
+// WEEK ACCORDION
 // ==========================================
 
 function renderWeeks() {
@@ -842,6 +846,8 @@ function renderWeeks() {
 
     const weeks = [0, 1, 2, 3].map(index => {
 
+        const weekNumber = index + 1;
+
         const activities = allLessons.slice(
             index * 3,
             index * 3 + 3
@@ -866,53 +872,78 @@ function renderWeeks() {
                 : text.weekLocked;
 
 
+        const isOpen = openWeekNumber === weekNumber;
+
+        const panelId = `week-lessons-${weekNumber}`;
+
+
         return `
 
-      <section class="week-block">
+      <section class="week-block ${isOpen ? "is-open" : ""}">
 
         <div class="week-header">
 
-          <div class="week-left">
+          <button
+            type="button"
+            class="week-toggle"
+            data-week-toggle="${weekNumber}"
+            aria-expanded="${isOpen}"
+            aria-controls="${panelId}"
+          >
 
-            <div class="week-counter">
-              0${index + 1}
-            </div>
+            <span class="week-left">
 
-            <div>
+              <span class="week-counter">
+                0${weekNumber}
+              </span>
 
-              <span class="week-topline">
+              <span class="week-copy">
 
-                ${text.week}
+                <span class="week-topline">
 
-                <span>—</span>
+                  ${text.week}
 
-                ${String(index * 3 + 1).padStart(2, "0")}
+                  <span>—</span>
 
-                –
+                  ${String(index * 3 + 1).padStart(2, "0")}
 
-                ${String(index * 3 + 3).padStart(2, "0")}
+                  –
+
+                  ${String(index * 3 + 3).padStart(2, "0")}
+
+                </span>
+
+                <span class="week-subtitle">
+                  ${text.weekSub}
+                </span>
 
               </span>
 
-              <p>${text.weekSub}</p>
-
-            </div>
-
-          </div>
+            </span>
 
 
-          <div class="week-status">
+            <span class="week-status">
 
-            ${status}
+              <span class="week-status-text">
+                ${status}
+              </span>
 
-            <span aria-hidden="true">↗</span>
+              <span class="week-chevron" aria-hidden="true">
+                ⌄
+              </span>
 
-          </div>
+            </span>
+
+          </button>
 
         </div>
 
 
-        <div class="lesson-stack">
+        <div
+          class="lesson-stack"
+          id="${panelId}"
+          ${isOpen ? "" : "hidden"}
+        >
 
           ${activities.map(
             activity => renderLessonCard(activity, text)
@@ -928,6 +959,62 @@ function renderWeeks() {
 
 
     container.innerHTML = weeks.join("");
+
+}
+
+
+// ==========================================
+// OPEN / CLOSE WEEK
+// ==========================================
+
+function toggleWeek(button) {
+
+    const selectedWeek = Number(
+        button.dataset.weekToggle
+    );
+
+
+    // Clicking the already open week closes it.
+    // Clicking another week opens that week instead.
+    openWeekNumber = openWeekNumber === selectedWeek
+        ? null
+        : selectedWeek;
+
+
+    // Update the existing week elements without
+    // rebuilding the lesson cards.
+    element("weeks-container")
+        .querySelectorAll("[data-week-toggle]")
+        .forEach(weekButton => {
+
+            const weekNumber = Number(
+                weekButton.dataset.weekToggle
+            );
+
+            const isOpen = weekNumber === openWeekNumber;
+
+            const panelId = weekButton.getAttribute(
+                "aria-controls"
+            );
+
+            const panel = element(panelId);
+
+            weekButton.setAttribute(
+                "aria-expanded",
+                String(isOpen)
+            );
+
+            if (panel) {
+                panel.hidden = !isOpen;
+            }
+
+            const block = weekButton.closest(".week-block");
+
+            if (block) {
+                block.classList.toggle("is-open", isOpen);
+            }
+
+        });
 
 }
 
@@ -1058,7 +1145,16 @@ async function loadMonth(monthNumber) {
 
     loadingMonth = true;
 
-    currentMonth = Number(monthNumber);
+
+    const requestedMonth = Number(monthNumber);
+
+    // Changing months starts with all weeks collapsed.
+    // Refreshing the same month preserves the open week.
+    if (requestedMonth !== currentMonth) {
+        openWeekNumber = null;
+    }
+
+    currentMonth = requestedMonth;
 
 
     element("weeks-container").innerHTML = `
@@ -1154,8 +1250,8 @@ async function loadMonth(monthNumber) {
         // Render all 12 activities.
         render();
 
-// Display feedback and renewal only when all
-// twelve activities are completed.
+        // Display feedback and renewal only when all
+        // twelve activities are completed.
         await refreshMonthEndExperience();
 
 
@@ -1421,6 +1517,9 @@ function render() {
 }
 
 
+// ==========================================
+// MONITOR STUDENT INVITATION
+// ==========================================
 
 function watchStudentInvitation() {
 
@@ -1505,7 +1604,6 @@ function watchStudentInvitation() {
 }
 
 
-
 // ==========================================
 // INITIALISE STUDENT PORTAL
 // ==========================================
@@ -1527,6 +1625,10 @@ export async function initStudentPortal(
     currentUser = user;
 
     accessStatus = invitation.status;
+
+
+    // Start with all weeks collapsed.
+    openWeekNumber = null;
 
 
     // Show the existing English Confidence design.
@@ -1658,6 +1760,8 @@ export async function initStudentPortal(
             "change",
             async event => {
 
+                // loadMonth detects the month change and
+                // automatically collapses all four weeks.
                 await loadMonth(
                     Number(event.target.value)
                 );
@@ -1670,6 +1774,22 @@ export async function initStudentPortal(
             "click",
             async event => {
 
+                // First check whether a week header was clicked.
+                const weekButton = event.target.closest(
+                    "[data-week-toggle]"
+                );
+
+                if (weekButton) {
+
+                    toggleWeek(weekButton);
+
+                    return;
+
+                }
+
+
+                // Otherwise check whether a podcast activity
+                // completion button was clicked.
                 const button = event.target.closest(
                     "[data-complete-lesson]"
                 );
@@ -1755,5 +1875,7 @@ export function disposeStudentPortal() {
     lessonRecords.clear();
 
     loadingMonth = false;
+
+    openWeekNumber = null;
 
 }
