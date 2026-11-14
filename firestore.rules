@@ -15,12 +15,16 @@ service cloud.firestore {
 
     function isAdmin() {
       return isSignedIn()
-        && request.auth.token.email == 'radka.fnhapulo@gmail.com';
+        && request.auth.token.email is string
+        && request.auth.token.email.lower()
+          == 'radka.fnhapulo@gmail.com';
     }
 
     function isOwnEmail(email) {
       return isSignedIn()
-        && request.auth.token.email == email;
+        && request.auth.token.email is string
+        && request.auth.token.email.lower()
+          == email.lower();
     }
 
     function invitationExists(email) {
@@ -71,7 +75,6 @@ service cloud.firestore {
       return exists(path)
         && get(path).data.completed == true;
     }
-
 
     function previousActivityCompleted(email, monthId, lessonId) {
 
@@ -263,158 +266,201 @@ service cloud.firestore {
 
           }
 
+        } // END LESSONS
 
-          // ====================================
-          // MONTHLY FEEDBACK
-          // ====================================
 
-          match /feedback/{feedbackId} {
+        // ======================================
+        // MONTHLY FEEDBACK
+        // ======================================
 
-            allow get: if isAdmin()
-              || canReadOwnProfile(email);
+        match /feedback/{feedbackId} {
 
-            allow list: if isAdmin();
+          allow get: if isAdmin()
+            || canReadOwnProfile(email);
 
-            allow create: if isOwnEmail(email)
+          allow list: if isAdmin();
 
-              && canReadOwnProfile(email)
+          allow create: if isOwnEmail(email)
 
-              && feedbackId == 'current'
+            && canReadOwnProfile(email)
 
-              && finalLessonCompleted(email, monthId)
+            && feedbackId == 'current'
 
-              && request.resource.data.keys().hasAll([
-                'email',
-                'studentName',
-                'monthNumber',
-                'monthKey',
-                'liked',
-                'improve',
-                'submittedAt'
-              ])
+            && finalLessonCompleted(email, monthId)
 
-              && request.resource.data.keys().hasOnly([
-                'email',
-                'studentName',
-                'monthNumber',
-                'monthKey',
-                'liked',
-                'improve',
-                'submittedAt'
-              ])
+            && request.resource.data.keys().hasAll([
+              'email',
+              'studentName',
+              'monthNumber',
+              'monthKey',
+              'liked',
+              'improve',
+              'submittedAt'
+            ])
 
-              && request.resource.data.email == email
+            && request.resource.data.keys().hasOnly([
+              'email',
+              'studentName',
+              'monthNumber',
+              'monthKey',
+              'liked',
+              'improve',
+              'submittedAt'
+            ])
 
-              && request.resource.data.monthKey == monthId
+            && request.resource.data.email == email
 
-              && request.resource.data.monthNumber is int
+            && request.resource.data.monthKey == monthId
 
-              && request.resource.data.liked is string
+            && request.resource.data.monthNumber is int
 
-              && request.resource.data.improve is string
+            && request.resource.data.liked is string
 
-              && request.resource.data.liked.size() > 0
+            && request.resource.data.improve is string
 
-              && request.resource.data.improve.size() > 0
+            && request.resource.data.liked.size() > 0
 
-              && request.resource.data.liked.size() <= 3000
+            && request.resource.data.improve.size() > 0
 
-              && request.resource.data.improve.size() <= 3000
+            && request.resource.data.liked.size() <= 3000
 
-              && request.resource.data.submittedAt == request.time;
+            && request.resource.data.improve.size() <= 3000
 
-            allow update, delete: if isAdmin();
+            && request.resource.data.submittedAt == request.time;
+
+          allow update, delete: if isAdmin();
+
+        }
+
+
+        // ======================================
+        // MONTHLY PAYMENT / RENEWAL
+        // ======================================
+
+        match /renewals/{renewalId} {
+
+          allow get: if isAdmin()
+            || canReadOwnProfile(email);
+
+          allow list: if isAdmin();
+
+
+          // Validate screenshot and payment data.
+          function validRenewalFields(data) {
+
+            return data.email == email
+
+              && data.studentName is string
+
+              && data.monthNumber is int
+
+              && data.monthKey == monthId
+
+              && data.nextMonthNumber == data.monthNumber + 1
+
+              && data.paymentMethod in [
+                'emola',
+                'mpesa',
+                'bim'
+              ]
+
+              && data.paymentReference is string
+
+              && data.paymentReference.size() <= 120
+
+              && data.screenshotMimeType in [
+                'image/webp',
+                'image/jpeg',
+                'image/png'
+              ]
+
+              && data.screenshotBytes is int
+
+              && data.screenshotBytes > 0
+
+              && data.screenshotBytes <= 409600
+
+              && data.screenshotDataUrl is string
+
+              && data.screenshotDataUrl.size() < 600000
+
+              && data.screenshotDataUrl.matches(
+                '^data:image/(webp|jpeg|png);base64,[A-Za-z0-9+/=]+$'
+              );
 
           }
 
 
-          // ====================================
-          // MONTHLY PAYMENT / RENEWAL
-          // ====================================
+          allow create: if isOwnEmail(email)
 
-          match /renewals/{renewalId} {
+            && canReadOwnProfile(email)
 
-            allow get: if isAdmin()
-              || canReadOwnProfile(email);
+            && renewalId == 'current'
 
-            allow list: if isAdmin();
+            && finalLessonCompleted(email, monthId)
 
+            && request.resource.data.keys().hasAll([
+              'email',
+              'studentName',
+              'monthNumber',
+              'monthKey',
+              'nextMonthNumber',
+              'paymentMethod',
+              'paymentReference',
+              'screenshotDataUrl',
+              'screenshotMimeType',
+              'screenshotBytes',
+              'status',
+              'submittedAt'
+            ])
 
-            // Validate screenshot and payment data.
-            function validRenewalFields(data) {
+            && request.resource.data.keys().hasOnly([
+              'email',
+              'studentName',
+              'monthNumber',
+              'monthKey',
+              'nextMonthNumber',
+              'paymentMethod',
+              'paymentReference',
+              'screenshotDataUrl',
+              'screenshotMimeType',
+              'screenshotBytes',
+              'status',
+              'submittedAt'
+            ])
 
-              return data.email == email
+            && validRenewalFields(request.resource.data)
 
-                && data.studentName is string
+            && request.resource.data.status == 'pending'
 
-                && data.monthNumber is int
-
-                && data.monthKey == monthId
-
-                && data.nextMonthNumber == data.monthNumber + 1
-
-                && data.paymentMethod in [
-                  'emola',
-                  'mpesa',
-                  'bim'
-                ]
-
-                && data.paymentReference is string
-
-                && data.paymentReference.size() <= 120
-
-                && data.screenshotMimeType in [
-                  'image/webp',
-                  'image/jpeg',
-                  'image/png'
-                ]
-
-                && data.screenshotBytes is int
-
-                && data.screenshotBytes > 0
-
-                && data.screenshotBytes <= 409600
-
-                && data.screenshotDataUrl is string
-
-                && data.screenshotDataUrl.size() < 600000
-
-                && data.screenshotDataUrl.matches(
-                  '^data:image/(webp|jpeg|png);base64,[A-Za-z0-9+/=]+$'
-                );
-
-            }
+            && request.resource.data.submittedAt == request.time;
 
 
-            allow create: if isOwnEmail(email)
+          // Student can resubmit only after rejection.
+          allow update: if isAdmin()
+
+            || (
+
+              isOwnEmail(email)
 
               && canReadOwnProfile(email)
 
               && renewalId == 'current'
 
-              && finalLessonCompleted(email, monthId)
+              && resource.data.status == 'rejected'
 
-              && request.resource.data.keys().hasAll([
-                'email',
-                'studentName',
-                'monthNumber',
-                'monthKey',
-                'nextMonthNumber',
-                'paymentMethod',
-                'paymentReference',
-                'screenshotDataUrl',
-                'screenshotMimeType',
-                'screenshotBytes',
-                'status',
-                'submittedAt'
-              ])
+              && request.resource.data.status == 'pending'
 
-              && request.resource.data.keys().hasOnly([
-                'email',
+              && request.resource.data.email == resource.data.email
+
+              && request.resource.data.monthKey == resource.data.monthKey
+
+              && request.resource.data.monthNumber == resource.data.monthNumber
+
+              && request.resource.data.nextMonthNumber == resource.data.nextMonthNumber
+
+              && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
                 'studentName',
-                'monthNumber',
-                'monthKey',
-                'nextMonthNumber',
                 'paymentMethod',
                 'paymentReference',
                 'screenshotDataUrl',
@@ -426,61 +472,17 @@ service cloud.firestore {
 
               && validRenewalFields(request.resource.data)
 
-              && request.resource.data.status == 'pending'
+              && request.resource.data.submittedAt == request.time
 
-              && request.resource.data.submittedAt == request.time;
+            );
 
-
-            // The student can resubmit only when
-            // the previous request was rejected.
-            allow update: if isAdmin()
-
-              || (
-
-                isOwnEmail(email)
-
-                && canReadOwnProfile(email)
-
-                && renewalId == 'current'
-
-                && resource.data.status == 'rejected'
-
-                && request.resource.data.status == 'pending'
-
-                && request.resource.data.email == resource.data.email
-
-                && request.resource.data.monthKey == resource.data.monthKey
-
-                && request.resource.data.monthNumber == resource.data.monthNumber
-
-                && request.resource.data.nextMonthNumber == resource.data.nextMonthNumber
-
-                && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
-                  'studentName',
-                  'paymentMethod',
-                  'paymentReference',
-                  'screenshotDataUrl',
-                  'screenshotMimeType',
-                  'screenshotBytes',
-                  'status',
-                  'submittedAt'
-                ])
-
-                && validRenewalFields(request.resource.data)
-
-                && request.resource.data.submittedAt == request.time
-
-              );
-
-            allow delete: if isAdmin();
-
-          }
+          allow delete: if isAdmin();
 
         }
 
-      }
+      } // END MONTHS
 
-    }
+    } // END STUDENTS
 
 
     // ==========================================
@@ -493,12 +495,14 @@ service cloud.firestore {
 
         || (
           settingId == 'paymentMethods'
-
           && isSignedIn()
-
-          && invitationExists(request.auth.token.email)
-
-          && invitationStatus(request.auth.token.email) != 'revoked'
+          && request.auth.token.email is string
+          && invitationExists(
+            request.auth.token.email.lower()
+          )
+          && invitationStatus(
+            request.auth.token.email.lower()
+          ) != 'revoked'
         );
 
       allow list: if isAdmin();

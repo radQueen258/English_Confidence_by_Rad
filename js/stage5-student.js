@@ -1097,8 +1097,7 @@ export async function refreshMonthEndExperience() {
 
     try {
 
-        await Promise.all([
-
+        const results = await Promise.allSettled([
             loadFeedback(
                 context.user.email.toLowerCase(),
                 context.month,
@@ -1111,8 +1110,22 @@ export async function refreshMonthEndExperience() {
             ),
 
             loadPaymentMethods()
-
         ]);
+
+        const labels = [
+            "Feedback",
+            "Renewal status",
+            "Payment methods"
+        ];
+
+        results.forEach((result, index) => {
+            if (result.status === "rejected") {
+                console.error(
+                    `${labels[index]} failed:`,
+                    result.reason
+                );
+            }
+        });
 
     } catch (error) {
 
@@ -1232,42 +1245,5 @@ export function setupMonthEndExperience(contextProvider) {
 
 
     stage5Initialised = true;
-
-}
-
-
-function applyMonthEndLanguage(language) {
-
-    const t = monthEndTranslations[language]
-        || monthEndTranslations.en;
-
-    el("month-end-heading").innerHTML = t.monthTitle;
-
-    el("feedback-kicker").textContent = t.feedbackKicker;
-    el("feedback-title").textContent = t.feedbackTitle;
-    el("feedback-description").textContent = t.feedbackIntro;
-
-    el("feedback-liked-label").textContent = t.liked;
-    el("feedback-improve-label").textContent = t.improve;
-
-    el("feedback-liked").placeholder = t.feedbackPlaceholder1;
-    el("feedback-improve").placeholder = t.feedbackPlaceholder2;
-
-    el("feedback-submit-button").textContent = t.sendFeedback;
-
-    el("renewal-kicker").textContent = t.renewalKicker;
-    el("renewal-title").textContent = t.renewalTitle;
-    el("renewal-description").textContent = t.renewalIntro;
-
-    el("renewal-start-button").textContent = t.continue;
-
-    el("renewal-step-one").textContent = t.chooseMethod;
-    el("renewal-method-label").textContent = t.paymentMethod;
-
-    el("renewal-step-two").textContent = t.upload;
-    el("renewal-proof-label").textContent = t.screenshot;
-    el("renewal-upload-hint").textContent = t.uploadHint;
-
-    el("renewal-submit-button").textContent = t.submit;
 
 }
