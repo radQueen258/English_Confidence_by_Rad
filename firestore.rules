@@ -4,34 +4,158 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    function isSignedInWithVerifiedEmail() {
+    function isSignedIn() {
       return request.auth != null
         && request.auth.token.email_verified == true;
     }
 
     function isAdmin() {
-      return isSignedInWithVerifiedEmail()
+      return isSignedIn()
         && request.auth.token.email == 'radka.fnhapulo@gmail.com';
     }
 
+    function isOwnEmail(email) {
+      return isSignedIn()
+        && request.auth.token.email == email;
+    }
+
+    function invitationExists(email) {
+      return exists(
+        /databases/$(database)/documents/invitations/$(email)
+      );
+    }
+
+    function invitationStatus(email) {
+      return get(
+        /databases/$(database)/documents/invitations/$(email)
+      ).data.status;
+    }
+
+    function canReadOwnProfile(email) {
+      return isOwnEmail(email)
+        && invitationExists(email)
+        && invitationStatus(email) != 'revoked';
+    }
+
+    function canAccessLessons(email) {
+      return isOwnEmail(email)
+        && invitationExists(email)
+        && invitationStatus(email) == 'active';
+    }
+
+
+    // ==========================================
+    // INVITATIONS
+    // ==========================================
+
     match /invitations/{email} {
 
-      // A student can only retrieve their own invitation.
-      allow get: if isAdmin()
-        || (
-          isSignedInWithVerifiedEmail()
-          && request.auth.token.email == email
-        );
+      // Students can check their own invitation,
+      // including when access has been revoked.
+      allow get: if isAdmin() || isOwnEmail(email);
 
-      // Only the administrator can list all students.
       allow list: if isAdmin();
 
-      // Only the administrator can manage invitations.
       allow create, update, delete: if isAdmin();
     }
 
-    // Keep all other database areas closed for now.
-    // We will add their specific permissions in later stages.
+
+    // ==========================================
+    // STUDENT PROFILES
+    // ==========================================
+
+    match /students/{email} {
+
+      allow get: if isAdmin()
+        || canReadOwnProfile(email);
+
+      allow list: if isAdmin();
+
+      allow create, update, delete: if isAdmin();
+
+
+      // ========================================
+      // MONTHS
+      // ========================================
+
+      match /months/{monthId} {
+
+        // Students retain access to their
+        // own month records while paused.
+        allow get, list: if isAdmin()
+          || canReadOwnProfile(email);
+
+        allow create, update, delete: if isAdmin();
+
+
+        // ======================================
+        // LESSONS
+        // ======================================
+
+        match /lessons/{lessonId} {
+
+          // Only published lessons are visible
+          // to students with active access.
+          allow get, list: if isAdmin()
+            || (
+              canAccessLessons(email)
+              && resource.data.published == true
+            );
+
+          allow create, update, delete: if isAdmin();
+
+
+          // ====================================
+          // COMPLETION RECORDS
+          // ====================================
+
+          match /completions/{completionId} {
+
+            allow get, list: if isAdmin()
+              || canReadOwnProfile(email);
+
+            // The teacher can mark live lessons.
+            // A student can only complete a podcast
+            // activity belonging to their account.
+            allow create, update: if isAdmin()
+              || (
+                canAccessLessons(email)
+
+                && get(
+                  /databases/$(database)/documents/students/$(email)/months/$(monthId)/lessons/$(lessonId)
+                ).data.type == 'podcast'
+
+                && request.resource.data.keys().hasOnly([
+                  'completed',
+                  'completedAt',
+                  'completedByEmail'
+                ])
+
+                && request.resource.data.keys().hasAll([
+                  'completed',
+                  'completedAt',
+                  'completedByEmail'
+                ])
+
+                && request.resource.data.completed == true
+
+                && request.resource.data.completedByEmail
+                  == request.auth.token.email
+
+                && request.resource.data.completedAt == request.time
+              );
+
+            allow delete: if isAdmin();
+          }
+        }
+      }
+    }
+
+
+    // ==========================================
+    // ALL OTHER COLLECTIONS
+    // REMAIN PRIVATE UNTIL WE CONFIGURE THEM
+    // ==========================================
 
     match /{document=**} {
       allow read, write: if false;
