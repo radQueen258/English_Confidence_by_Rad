@@ -849,11 +849,51 @@
       <a href="#jornada" data-i18n="navJourney">A minha jornada</a>
       <a href="#metodo" data-i18n="navMethod">O método</a>
     </nav>
+
     <div class="lang-switch" role="group" aria-label="Language / Idioma">
       <button type="button" id="lang-pt" class="active" aria-pressed="true">PT</button>
       <button type="button" id="lang-en" aria-pressed="false">EN</button>
     </div>
+
+
+    <div class="student-account-controls">
+
+  <span id="student-display-name">
+  </span>
+
+      <button
+              type="button"
+              id="student-sign-out"
+              class="student-signout"
+      >
+        Sign out
+      </button>
+
+    </div>
+
+
   </header>
+
+
+  <div
+          id="student-access-notice"
+          class="student-access-notice page-width"
+          hidden
+  >
+    <span class="student-notice-icon">✦</span>
+
+    <div>
+      <strong id="student-notice-title">
+        Learning access paused
+      </strong>
+
+      <p id="student-notice-message">
+        You can still revisit your completed lessons.
+        Please contact your teacher regarding renewal.
+      </p>
+    </div>
+  </div>
+
 
   <main hidden>
     <section class="hero page-width" id="inicio" aria-labelledby="hero-title">
@@ -883,6 +923,23 @@
       <div class="dashboard-grid">
         <div class="progress-card">
           <div class="card-upper"><span class="mini-tag" data-i18n="monthlyPlan">PLANO MENSAL</span><span class="progress-orbit" aria-hidden="true">✳</span></div>
+
+          <div class="student-month-picker">
+
+            <label for="student-month-select" data-i18n="history">
+              LEARNING HISTORY
+            </label>
+
+            <select id="student-month-select">
+            </select>
+
+          </div>
+
+          <p
+                  id="student-month-label"
+                  class="student-month-label"
+          ></p>
+
           <div class="progress-big" id="progress-percent">0<span>%</span></div>
           <p data-i18n="progressCaption">do percurso concluído</p>
           <div class="progress-bar"><div id="progress-fill"></div></div>
@@ -895,8 +952,13 @@
     </section>
 
     <section class="journey page-width" id="jornada" aria-labelledby="journey-title">
-      <div class="section-heading journey-heading"><div><p class="kicker"><span>02</span> <span data-i18n="journeyKicker">O TEU PERCURSO</span></p><h2 id="journey-title" data-i18n="journeyTitle">Pequenos passos.<br/>Grandes mudanças.</h2></div><div class="journey-aside"><div class="legend-item"><span class="legend-dot finished"></span><span data-i18n="done">Concluída</span></div><div class="legend-item"><span class="legend-dot current"></span><span data-i18n="available">Disponível</span></div><div class="legend-item"><span class="legend-dot locked"></span><span data-i18n="locked">Bloqueada</span></div></div></div>
-      <div class="notice" role="note"><span class="notice-icon">✳</span><span data-i18n="unlockMessage">Cada nova atividade fica disponível quando terminares a anterior e a tua professora a desbloquear.</span></div>
+      <div class="section-heading journey-heading">
+        <div><p class="kicker"><span>02</span> <span data-i18n="journeyKicker">O TEU PERCURSO</span></p>
+          <h2 id="journey-title" data-i18n="journeyTitle">Pequenos passos.<br/>Grandes mudanças.</h2></div>
+        <div class="journey-aside"><div class="legend-item"><span class="legend-dot finished"></span><span data-i18n="done">Concluída</span></div><div class="legend-item"><span class="legend-dot current"></span><span data-i18n="available">Disponível</span></div><div class="legend-item"><span class="legend-dot locked"></span><span data-i18n="locked">Bloqueada</span></div></div></div>
+      <div class="notice" role="note">
+        <span class="notice-icon">✳</span>
+        <span id="unlock-message" data-i18n="unlockMessage">Cada nova atividade fica disponível quando terminares a anterior e a tua professora a desbloquear.</span></div>
       <div id="weeks-container" class="weeks-container"></div>
     </section>
 

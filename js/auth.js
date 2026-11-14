@@ -21,6 +21,13 @@ import {
     getDoc
 } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
 
+
+import {
+    initStudentPortal,
+    disposeStudentPortal
+} from "./student-portal.js";
+
+
 // HTML elements
 const loginView = document.getElementById("auth-screen");
 const sessionView = document.getElementById("auth-session");
@@ -55,6 +62,8 @@ let routingUid = null;
 
 // Show login screen
 function showLogin(message = loginNotice) {
+
+    disposeStudentPortal();
 
     disposeAdminDashboard();
 
@@ -215,31 +224,50 @@ async function routeSignedInUser(user) {
 
 
         // PAUSED ACCOUNT
+
         if (invitation.status === "paused") {
 
-            showSession({
-                role: "STUDENT ACCOUNT · ACCESS PAUSED",
-                email,
+            try {
 
-                heading: `Hello${invitation.name ? `, ${invitation.name}` : ""}.`,
+                await initStudentPortal(user, invitation);
 
-                message:
-                    "Your invitation is recognised, but lesson access is currently paused. Your renewal and payment area will be connected in the next implementation stage."
-            });
+            } catch (error) {
+
+                console.error(
+                    "Paused student portal error:",
+                    error
+                );
+
+                await denyAccess(
+                    "Your learning history could not be loaded. Please contact your teacher."
+                );
+
+            }
 
             return;
         }
 
 
-        // ACTIVE ACCOUNT
-        if (invitation.status !== "active") {
 
-            await denyAccess(
-                "Your invitation is not active. Please contact your teacher."
+
+// ACTIVE STUDENT
+        try {
+
+            await initStudentPortal(user, invitation);
+
+        } catch (error) {
+
+            console.error(
+                "Student portal initialisation failed:",
+                error
             );
 
-            return;
+            await denyAccess(
+                "Your personal learning portal could not be loaded. Please contact your teacher."
+            );
+
         }
+
 
         showSession({
             role: "STUDENT ACCOUNT · INVITATION ACTIVE",

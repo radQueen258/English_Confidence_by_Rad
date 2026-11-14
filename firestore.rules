@@ -54,6 +54,14 @@ service cloud.firestore {
       );
     }
 
+
+    function ownLessonCompleted(email, monthId, lessonId) {
+        return exists(
+           /databases/$(database)/documents/students/$(email)/months/$(monthId)/lessons/$(lessonId)/completions/status
+        );
+    }
+
+
     function previousActivityCompleted(email, monthId, lessonId) {
 
       return lessonId == 'lesson-1'
@@ -163,16 +171,40 @@ service cloud.firestore {
 
           // Students can retrieve individual lessons
           // only after the previous activity is done.
-          allow get: if isAdmin()
-            || (
-              canAccessLessons(email)
-              && resource.data.published == true
-              && previousActivityCompleted(
-                email,
-                monthId,
-                lessonId
-              )
-            );
+
+
+allow get: if isAdmin()
+
+  // Active students can access published lessons
+  // once the previous activity has been completed.
+  || (
+
+    canAccessLessons(email)
+
+    && resource.data.published == true
+
+    && previousActivityCompleted(
+      email,
+      monthId,
+      lessonId
+    )
+
+  )
+
+  // Active or paused students can revisit
+  // lessons they have already completed.
+  || (
+
+    canReadOwnProfile(email)
+
+    && ownLessonCompleted(
+      email,
+      monthId,
+      lessonId
+    )
+
+  );
+
 
           // Students use individual getDoc requests,
           // not collection queries, for lesson access.
